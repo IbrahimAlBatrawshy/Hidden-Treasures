@@ -5,7 +5,7 @@ import 'package:hidden_treasures/constants/app_colors.dart';
 import 'package:hidden_treasures/models/hotel_model.dart';
 import 'package:hidden_treasures/models/user_model.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/profile_screen.dart';
-import 'package:hidden_treasures/screens/bottomNavPages/chat_screen.dart';
+import 'package:hidden_treasures/screens/bottomNavPages/chats/chat_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/fav_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/map_screen.dart';
 import 'package:hidden_treasures/screens/car/carRental_screen.dart';

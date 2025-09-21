@@ -38,7 +38,14 @@ class UserModel {
       userName: "Mohamed Ayman",
       email: "mohameda.ayman8@gmail.com",
       password: "medo123",
-      image: AssetImage("assets/images/p3.jpg"),
+      image: AssetImage("assets/images/p1.jpg"),
+    ),
+    UserModel(
+      id: 2,
+      userName: "Ali Essam",
+      email: "alia.essam@gmail.com",
+      password: "ali123",
+      image: AssetImage("assets/images/p2.jpg"),
     ),
   ];
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hidden_treasures/login_screen.dart';
+import 'package:hidden_treasures/screens/bottomNavPages/chats/chat_screen.dart';
 import 'package:hidden_treasures/screens/home_screen.dart';
 import 'package:hidden_treasures/screens/splash_screen.dart';
 
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const ChatScreen(),
     );
   }
 }
