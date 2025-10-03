@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "478195767837",
+    "project_id": "hiddentreausers",
+    "storage_bucket": "hiddentreausers.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478195767837:android:d433a4bb2efbbe5cf1c4f4",
+        "android_client_info": {
+          "package_name": "com.example.hidden_treasures"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaAzljG1mDFJnF6-T7PGe8niWks0r7r6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
