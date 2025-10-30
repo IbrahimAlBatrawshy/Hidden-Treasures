@@ -18,7 +18,6 @@ class _NotificationsScreenState extends State<NotficationsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Back button
                 Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: IconButton(
@@ -29,7 +28,6 @@ class _NotificationsScreenState extends State<NotficationsScreen> {
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                // Clear all button
                 TextButton(
                   onPressed: () {
                     Navigator.push(
