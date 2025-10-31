@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidden_treasures/cubits/auth/auth_cubit.dart';
+import 'package:hidden_treasures/cubits/auth/auth_state.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,8 +15,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  bool _isLoading = false;
   bool _obscurePassword = true;
 
   @override
@@ -26,84 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      try {
-        // Sign in with Firebase
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text,
-        );
-
-        if (!mounted) return;
-
-        // Check if email is verified
-        if (userCredential.user?.emailVerified == false) {
-          // Navigate to email verification screen
-          Navigator.pushReplacementNamed(context, '/email-verification');
-          return;
-        }
-
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Welcome back, ${userCredential.user?.email ?? "User"}! ✅'),
-            backgroundColor: Colors.green,
-          ),
-        );
-
-        // Navigate to home
-        Navigator.pushReplacementNamed(context, '/home');
-      } on FirebaseAuthException catch (e) {
-        // Handle Firebase errors
-        String errorMessage;
-        switch (e.code) {
-          case 'user-not-found':
-            errorMessage = 'No user found with this email.';
-            break;
-          case 'wrong-password':
-            errorMessage = 'Wrong password provided.';
-            break;
-          case 'invalid-email':
-            errorMessage = 'Invalid email address.';
-            break;
-          case 'user-disabled':
-            errorMessage = 'This account has been disabled.';
-            break;
-          case 'invalid-credential':
-            errorMessage = 'Invalid credentials. Please check your email and password.';
-            break;
-          default:
-            errorMessage = 'Login failed: ${e.message}';
-        }
-
-        if (!mounted) return;
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorMessage),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 4),
-          ),
-        );
-      } catch (e) {
-        if (!mounted) return;
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('An error occurred: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      } finally {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      }
+      final authCubit = context.read<AuthCubit>();
+      await authCubit.signIn(
+        emailController.text.trim(),
+        passwordController.text,
+      );
     }
   }
 
@@ -118,176 +45,184 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    try {
-      await _auth.sendPasswordResetEmail(email: emailController.text.trim());
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password reset email sent! Check your inbox.'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } on FirebaseAuthException catch (e) {
-      if (!mounted) return;
-
-      String message = 'Failed to send reset email';
-      if (e.code == 'user-not-found') {
-        message = 'No user found with this email';
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+    final authCubit = context.read<AuthCubit>();
+    await authCubit.sendPasswordResetEmail(emailController.text.trim());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const Text(
-                    "Sign In",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 30),
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthAuthenticated) {
+          if (state.emailVerified) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Welcome back, ${state.email}! ✅'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            Navigator.pushReplacementNamed(context, '/home');
+          } else {
+            Navigator.pushReplacementNamed(context, '/email-verification');
+          }
+        } else if (state is AuthEmailVerificationRequired) {
+          Navigator.pushReplacementNamed(context, '/email-verification');
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state is AuthLoading;
+        
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Sign In",
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 30),
 
-                  /// Email
-                  TextFormField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter email';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Enter valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 15),
-
-                  /// Password
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      prefixIcon: const Icon(Icons.lock),
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      /// Email
+                      TextFormField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          labelText: "Email",
+                          prefixIcon: Icon(Icons.email),
+                          border: OutlineInputBorder(),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter email';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Enter valid email';
+                          }
+                          return null;
                         },
                       ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.length < 6) {
-                        return 'Password must be 6+ chars';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 10),
+                      const SizedBox(height: 15),
 
-                  /// Forgot password + create account
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: _resetPassword,
-                        child: const Text("Forgot password?"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const SignUpScreen(),
+                      /// Password
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: _obscurePassword,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          prefixIcon: const Icon(Icons.lock),
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
                             ),
-                          );
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.length < 6) {
+                            return 'Password must be 6+ chars';
+                          }
+                          return null;
                         },
-                        child: const Text("Create account"),
+                      ),
+                      const SizedBox(height: 10),
+
+                      /// Forgot password + create account
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: isLoading ? null : _resetPassword,
+                            child: const Text("Forgot password?"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const SignUpScreen(),
+                                ),
+                              );
+                            },
+                            child: const Text("Create account"),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+
+                      /// Login button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepOrange,
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                          ),
+                          onPressed: isLoading ? null : _login,
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text(
+                                  "Sign In",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+                      const Text("Or Sign In With"),
+                      const SizedBox(height: 10),
+
+                      /// Social login buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.g_mobiledata, size: 40),
+                          ),
+                          const SizedBox(width: 15),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.facebook, size: 35),
+                          ),
+                          const SizedBox(width: 15),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.close, size: 35),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15),
-
-                  /// Login button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                      ),
-                      onPressed: _isLoading ? null : _login,
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Text(
-                              "Sign In",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-                  const Text("Or Sign In With"),
-                  const SizedBox(height: 10),
-
-                  /// Social login buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.g_mobiledata, size: 40),
-                      ),
-                      const SizedBox(width: 15),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.facebook, size: 35),
-                      ),
-                      const SizedBox(width: 15),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.close, size: 35),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
