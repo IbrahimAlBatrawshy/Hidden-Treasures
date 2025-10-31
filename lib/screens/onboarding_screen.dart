@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hidden_treasures/screens/bottomNavPages/profile_screen.dart';
 import 'package:hidden_treasures/screens/login_screen.dart';
 import '../models/onboarding_model.dart';
 import '../widgets/onboarding_page.dart';

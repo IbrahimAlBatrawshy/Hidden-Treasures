@@ -19,6 +19,7 @@ import 'package:hidden_treasures/screens/settings_screen.dart';
 import 'package:hidden_treasures/screens/logout_screen.dart';
 import 'package:hidden_treasures/screens/login_screen.dart';
 import 'package:hidden_treasures/screens/help_center_screen.dart';
+import 'package:hidden_treasures/screens/email_verification_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/myaccount': (context) => const MyAccountScreen(),
         '/logout': (context) => const LogOutScreen(),
         '/login': (context) => const LoginScreen(),
+        '/email-verification': (context) => const EmailVerificationScreen(),
         '/helpcenter': (context) => const HelpCenterScreen(),
         '/restaurant': (context) => const RestaurantScreen(),
         '/hotel': (context) => const HotelScreen(),
