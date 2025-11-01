@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
 import 'package:hidden_treasures/cubits/auth/auth_cubit.dart';
 import 'package:hidden_treasures/cubits/auth/auth_state.dart';
 
@@ -56,7 +57,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (state is AuthEmailVerificationRequired) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Account created successfully! ✅\nPlease verify your email.'),
+              content: Text(
+                'Account created successfully! ✅\nPlease verify your email.',
+              ),
               backgroundColor: Colors.green,
               duration: Duration(seconds: 3),
             ),
@@ -74,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       builder: (context, state) {
         final isLoading = state is AuthLoading;
-        
+
         return Scaffold(
           body: Padding(
             padding: const EdgeInsets.all(20),
@@ -84,9 +87,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 50),
+                        child: Image.asset(
+                          "assets/images/logo.png",
+                          width: 300,
+                          height: 100,
+                        ),
+                      ),
                       const Text(
                         "Sign Up",
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 30),
 
@@ -134,7 +148,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                             ),
                             onPressed: () {
                               setState(() {
@@ -158,11 +174,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                              _obscureConfirmPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                             ),
                             onPressed: () {
                               setState(() {
-                                _obscureConfirmPassword = !_obscureConfirmPassword;
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
                               });
                             },
                           ),
@@ -177,7 +196,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
+                            backgroundColor: AppColors.buttonPrimary,
                             padding: const EdgeInsets.symmetric(vertical: 15),
                           ),
                           onPressed: isLoading ? null : _register,
@@ -192,7 +211,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 )
                               : const Text(
                                   "Sign Up",
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                         ),
                       ),
@@ -204,7 +227,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text("Already have an account? Sign In"),
+                        child: const Text(
+                          "Already have an account? Sign In",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ],
                   ),

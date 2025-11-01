@@ -1,9 +1,12 @@
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons_plus/flutter_icons_plus.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hidden_treasures/componets/componets.dart';
 import 'package:hidden_treasures/constants/app_colors.dart';
 import 'package:hidden_treasures/models/hotel_model.dart';
 import 'package:hidden_treasures/models/user_model.dart';
+import 'package:hidden_treasures/screens/new_pf_Screen.dart';
 import 'package:hidden_treasures/screens/notfications_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/profile_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/chats/chat_screen.dart';
@@ -44,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const ChatScreen(),
     _buildHomePage(),
     const FavouritsScreen(),
-    const ProfileScreen(),
+    const newProfileScreen(),
   ];
 
   late final List<Widget> topBarPages = [
@@ -69,12 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           const SizedBox(height: 30),
           ListTile(
-            leading: CircleAvatar(backgroundImage: user.image, radius: 30),
+            leading: CircleAvatar(backgroundImage: user.image, radius: 35),
             title: Text(
               "Hi, ${user.userName}",
               style: const TextStyle(
                 color: AppColors.textPrimary,
-                fontSize: 17,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
             ),
             subtitle: const Text(
@@ -97,42 +101,70 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              filled: true,
-              fillColor: AppColors.borderLight,
-              hintText: "Search",
-              hintStyle: const TextStyle(
-                color: AppColors.textLight,
-                fontSize: 12,
-              ),
-              prefixIcon: const Icon(
-                Icons.search,
-                color: AppColors.textLight,
-                size: 25,
-              ),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  // TODO: Add filter action
-                },
-                icon: const Icon(Icons.filter_list_sharp),
+
+          //Text
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2),
+            child: Text(
+              "Let's Explore Cities and \nplaces",
+              style: TextStyle(
+                fontSize: 26.0,
+                height: 1.5,
+                color: Color.fromRGBO(33, 45, 82, 1),
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
-          const SizedBox(height: 25),
+
+          // search bar
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            child: Container(
+              height: 59.0,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(251, 251, 251, 1),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              padding: EdgeInsets.only(left: 16.0, right: 8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Search for Events,Hotels...",
+                        hintStyle: GoogleFonts.inter(
+                          color: Color.fromRGBO(163, 171, 195, 1),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Icon(Icons.search, color: Colors.orange),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
           Container(height: 1, width: double.infinity, color: Colors.black),
           const SizedBox(height: 10),
           const Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              "Categories",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                color: AppColors.accent,
+            child: Center(
+              child: Text(
+                "Categories",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: AppColors.secondary,
+                ),
               ),
             ),
           ),
@@ -140,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // Categories Row
           SizedBox(
-            height: 60, // give fixed height for the horizontal list
+            height: 60,
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -179,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 15),
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(20),
               color: AppColors.secondary,
             ),
             padding: const EdgeInsets.all(10),
@@ -189,7 +221,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w800,
-                  fontSize: 25,
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
             ),

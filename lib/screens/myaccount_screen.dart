@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
 import '../widgets/account_info_card.dart';
 
 class MyAccountScreen extends StatelessWidget {
@@ -9,8 +10,18 @@ class MyAccountScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF3E0),
       appBar: AppBar(
-        title: const Text('My Account', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFFEF5350),
+        title: const Text(
+          'My Account',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: AppColors.secondary,
+
+        centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -30,10 +41,10 @@ class MyAccountScreen extends StatelessWidget {
 
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFEF5350),
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              backgroundColor: AppColors.buttonPrimary,
+              padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
             onPressed: () => showDialog(

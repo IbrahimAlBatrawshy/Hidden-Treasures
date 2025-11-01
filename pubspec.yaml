@@ -51,6 +51,9 @@ dependencies:
   equatable: ^2.0.5
   hydrated_bloc: ^9.1.5
   path_provider: ^2.1.4
+  google_fonts: ^6.3.2
+  flutter_icons_plus: ^1.0.3
+  flutter_svg: ^2.2.1
 
 dev_dependencies:
   flutter_test:

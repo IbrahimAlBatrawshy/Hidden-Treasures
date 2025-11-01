@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidden_treasures/screens/new_pf_Screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/Profile_screen.dart';
@@ -30,15 +31,15 @@ import 'package:hidden_treasures/cubits/app_settings/app_settings_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize HydratedBloc storage for state persistence
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
-  
+
   // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  
+
   runApp(const MyApp());
 }
 
@@ -50,25 +51,17 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // Authentication state management
-        BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(),
-        ),
+        BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
         // Favorites state management with persistence
-        BlocProvider<FavoritesCubit>(
-          create: (context) => FavoritesCubit(),
-        ),
+        BlocProvider<FavoritesCubit>(create: (context) => FavoritesCubit()),
         // User profile state management with persistence
-        BlocProvider<UserProfileCubit>(
-          create: (context) => UserProfileCubit(),
-        ),
+        BlocProvider<UserProfileCubit>(create: (context) => UserProfileCubit()),
         // App settings state management with persistence
-        BlocProvider<AppSettingsCubit>(
-          create: (context) => AppSettingsCubit(),
-        ),
+        BlocProvider<AppSettingsCubit>(create: (context) => AppSettingsCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/splash',
+        initialRoute: '/settings',
         routes: {
           '/splash': (context) => const SplashScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
@@ -89,6 +82,8 @@ class MyApp extends StatelessWidget {
           '/profile': (context) => const ProfileScreen(),
           '/favourites': (context) => const FavouritsScreen(),
           '/chat': (context) => const ChatScreen(),
+          '/newprofile': (context) => const newProfileScreen(),
+          '/myacc': (context) => const MyAccountScreen(),
         },
       ),
     );

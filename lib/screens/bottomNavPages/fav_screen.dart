@@ -16,7 +16,8 @@ class FavouritsScreen extends StatefulWidget {
   State<FavouritsScreen> createState() => _FavouritsScreenState();
 }
 
-class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProviderStateMixin {
+class _FavouritsScreenState extends State<FavouritsScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -32,11 +33,17 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
   }
 
   List<Hotel> get favoriteHotels {
-    return [...featuredHotels, ...popularHotels].where((h) => h.isFavorite).toList();
+    return [
+      ...featuredHotels,
+      ...popularHotels,
+    ].where((h) => h.isFavorite).toList();
   }
 
   List<Restaurant> get favoriteRestaurants {
-    return [...featuredRestaurants, ...popularRestaurants].where((r) => r.isFavorite).toList();
+    return [
+      ...featuredRestaurants,
+      ...popularRestaurants,
+    ].where((r) => r.isFavorite).toList();
   }
 
   List<Event> get favoriteEvents {
@@ -44,7 +51,10 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
   }
 
   List<CarModel> get favoriteCars {
-    return [...featuredCars, ...popularCars].where((c) => c.isFavorite).toList();
+    return [
+      ...featuredCars,
+      ...popularCars,
+    ].where((c) => c.isFavorite).toList();
   }
 
   @override
@@ -54,11 +64,13 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
       appBar: AppBar(
         backgroundColor: AppColors.secondary,
         foregroundColor: Colors.white,
-        title: const Text(
-          'My Favorites',
+        centerTitle: true,
+        title: Text(
+          'Bookmarks',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 26,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         bottom: TabBar(
@@ -90,7 +102,7 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
 
   Widget _buildHotelsList() {
     final favorites = favoriteHotels;
-    
+
     if (favorites.isEmpty) {
       return _buildEmptyState('No favorite hotels yet', Icons.hotel);
     }
@@ -107,7 +119,7 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
 
   Widget _buildRestaurantsList() {
     final favorites = favoriteRestaurants;
-    
+
     if (favorites.isEmpty) {
       return _buildEmptyState('No favorite restaurants yet', Icons.restaurant);
     }
@@ -124,7 +136,7 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
 
   Widget _buildEventsList() {
     final favorites = favoriteEvents;
-    
+
     if (favorites.isEmpty) {
       return _buildEmptyState('No favorite events yet', Icons.event);
     }
@@ -141,7 +153,7 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
 
   Widget _buildCarsList() {
     final favorites = favoriteCars;
-    
+
     if (favorites.isEmpty) {
       return _buildEmptyState('No favorite cars yet', Icons.directions_car);
     }
@@ -161,11 +173,7 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 100,
-            color: AppColors.textLight,
-          ),
+          Icon(icon, size: 100, color: AppColors.textLight),
           const SizedBox(height: 20),
           Text(
             message,
@@ -177,10 +185,7 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
           const SizedBox(height: 10),
           const Text(
             'Start exploring and add favorites!',
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.textLight,
-            ),
+            style: TextStyle(fontSize: 14, color: AppColors.textLight),
           ),
         ],
       ),
@@ -205,7 +210,9 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
               child: Stack(
                 children: [
                   Image.network(
@@ -217,7 +224,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                       return Container(
                         height: 180,
                         color: AppColors.backgroundSecondary,
-                        child: const Icon(Icons.hotel, size: 50, color: AppColors.textLight),
+                        child: const Icon(
+                          Icons.hotel,
+                          size: 50,
+                          color: AppColors.textLight,
+                        ),
                       );
                     },
                   ),
@@ -226,7 +237,9 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                     right: 8,
                     child: IconButton(
                       icon: Icon(
-                        hotel.isFavorite ? Icons.favorite : Icons.favorite_border,
+                        hotel.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         color: Colors.red,
                         size: 28,
                       ),
@@ -256,7 +269,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, size: 16, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.location_on,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -275,7 +292,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.star, size: 18, color: AppColors.star),
+                          const Icon(
+                            Icons.star,
+                            size: 18,
+                            color: AppColors.star,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             hotel.rating.toString(),
@@ -312,7 +333,8 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RestaurantDeatailsScreen(restaurant: restaurant),
+            builder: (context) =>
+                RestaurantDeatailsScreen(restaurant: restaurant),
           ),
         );
       },
@@ -324,7 +346,9 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
               child: Stack(
                 children: [
                   Image.network(
@@ -336,7 +360,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                       return Container(
                         height: 180,
                         color: AppColors.backgroundSecondary,
-                        child: const Icon(Icons.restaurant, size: 50, color: AppColors.textLight),
+                        child: const Icon(
+                          Icons.restaurant,
+                          size: 50,
+                          color: AppColors.textLight,
+                        ),
                       );
                     },
                   ),
@@ -345,7 +373,9 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                     right: 8,
                     child: IconButton(
                       icon: Icon(
-                        restaurant.isFavorite ? Icons.favorite : Icons.favorite_border,
+                        restaurant.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         color: Colors.red,
                         size: 28,
                       ),
@@ -375,7 +405,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, size: 16, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.location_on,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -394,7 +428,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.star, size: 18, color: AppColors.star),
+                          const Icon(
+                            Icons.star,
+                            size: 18,
+                            color: AppColors.star,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             restaurant.rating.toString(),
@@ -443,7 +481,9 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
               child: Stack(
                 children: [
                   Image.network(
@@ -455,7 +495,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                       return Container(
                         height: 180,
                         color: AppColors.backgroundSecondary,
-                        child: const Icon(Icons.event, size: 50, color: AppColors.textLight),
+                        child: const Icon(
+                          Icons.event,
+                          size: 50,
+                          color: AppColors.textLight,
+                        ),
                       );
                     },
                   ),
@@ -464,7 +508,9 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                     right: 8,
                     child: IconButton(
                       icon: Icon(
-                        event.isFavorite ? Icons.favorite : Icons.favorite_border,
+                        event.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         color: Colors.red,
                         size: 28,
                       ),
@@ -494,7 +540,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, size: 16, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.location_on,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -510,7 +560,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today, size: 14, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 14,
+                        color: AppColors.textSecondary,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         '${event.date} at ${event.time}',
@@ -527,7 +581,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.star, size: 18, color: AppColors.star),
+                          const Icon(
+                            Icons.star,
+                            size: 18,
+                            color: AppColors.star,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             event.rating.toString(),
@@ -563,9 +621,7 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => CarDetailsScreen(car: car),
-          ),
+          MaterialPageRoute(builder: (context) => CarDetailsScreen(car: car)),
         );
       },
       child: Card(
@@ -576,7 +632,9 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
               child: Stack(
                 children: [
                   Image.network(
@@ -588,7 +646,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                       return Container(
                         height: 180,
                         color: AppColors.backgroundSecondary,
-                        child: const Icon(Icons.directions_car, size: 50, color: AppColors.textLight),
+                        child: const Icon(
+                          Icons.directions_car,
+                          size: 50,
+                          color: AppColors.textLight,
+                        ),
                       );
                     },
                   ),
@@ -627,7 +689,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, size: 16, color: AppColors.textSecondary),
+                      const Icon(
+                        Icons.location_on,
+                        size: 16,
+                        color: AppColors.textSecondary,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -646,7 +712,11 @@ class _FavouritsScreenState extends State<FavouritsScreen> with SingleTickerProv
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.star, size: 18, color: AppColors.star),
+                          const Icon(
+                            Icons.star,
+                            size: 18,
+                            color: AppColors.star,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             car.rating.toString(),

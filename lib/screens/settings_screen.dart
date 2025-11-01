@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
 import '../widgets/settings_tile.dart';
 import '../widgets/section_title.dart';
 
@@ -19,8 +20,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF3E0),
       appBar: AppBar(
-        title: const Text('Settings', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFFEF5350),
+        centerTitle: true,
+        title: const Text(
+          'Settings',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        backgroundColor: AppColors.secondary,
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
