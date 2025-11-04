@@ -60,7 +60,7 @@ class _FavouritsScreenState extends State<FavouritsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Color(0xFFFFF3E0),
       appBar: AppBar(
         backgroundColor: AppColors.secondary,
         foregroundColor: Colors.white,
@@ -203,6 +203,7 @@ class _FavouritsScreenState extends State<FavouritsScreen>
         );
       },
       child: Card(
+        color: Colors.white,
         margin: const EdgeInsets.only(bottom: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 3,
@@ -339,6 +340,7 @@ class _FavouritsScreenState extends State<FavouritsScreen>
         );
       },
       child: Card(
+        color: Colors.white,
         margin: const EdgeInsets.only(bottom: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 3,
@@ -474,6 +476,7 @@ class _FavouritsScreenState extends State<FavouritsScreen>
         );
       },
       child: Card(
+        color: Colors.white,
         margin: const EdgeInsets.only(bottom: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 3,
@@ -625,6 +628,7 @@ class _FavouritsScreenState extends State<FavouritsScreen>
         );
       },
       child: Card(
+        color: Colors.white,
         margin: const EdgeInsets.only(bottom: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 3,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hidden_treasures/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/onboarding_model.dart';
 import '../widgets/onboarding_page.dart';
 import '../widgets/page_indicator.dart';
@@ -28,14 +29,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     });
   }
 
-  void _nextPage() {
+  void _nextPage() async {
     if (_currentPage < _pages.length - 1) {
       _pageController.nextPage(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     } else {
-      // Navigate to main app (you can replace this with your home screen)
+      // Mark onboarding as seen and navigate to LoginScreen
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('seenOnboarding', true);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),

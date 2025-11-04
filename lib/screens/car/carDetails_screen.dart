@@ -24,43 +24,26 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Color(0xFFFFF3E0),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.secondary,
         elevation: 0,
         leading: Container(
           margin: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors.backgroundSecondary,
-            borderRadius: BorderRadius.circular(8),
-          ),
           child: IconButton(
-            icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: Icon(Icons.arrow_back, color: Colors.white, size: 25),
             onPressed: () => Navigator.pop(context),
           ),
         ),
         title: Text(
-          'Detail',
+          'Details',
           style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 18,
+            color: Colors.white,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
-        actions: [
-          Container(
-            margin: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundSecondary,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.more_horiz, color: AppColors.textPrimary),
-              onPressed: () {},
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -68,8 +51,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           children: [
             // Main Image
             Container(
-              height: 250,
-              margin: EdgeInsets.symmetric(horizontal: 16),
+              height: 240,
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [

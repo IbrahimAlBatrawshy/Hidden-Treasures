@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidden_treasures/cubits/auth/auth_cubit.dart';
 import 'package:hidden_treasures/cubits/auth/auth_state.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -37,16 +38,31 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _resetPassword() async {
     if (emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your email first'),
-          backgroundColor: Colors.orange,
+        SnackBar(
+          content: const Text('Please enter your email first'),
+          backgroundColor: AppColors.warning,
         ),
       );
       return;
     }
 
     final authCubit = context.read<AuthCubit>();
-    await authCubit.sendPasswordResetEmail(emailController.text.trim());
+    try {
+      await authCubit.sendPasswordResetEmail(emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Password reset email sent'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send reset email: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
   }
 
   @override
@@ -57,8 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state.emailVerified) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Welcome back, ${state.email}! ✅'),
-                backgroundColor: Colors.green,
+                content: Text('Welcome back, ${state.displayName}!'),
+                backgroundColor: AppColors.success,
               ),
             );
             Navigator.pushReplacementNamed(context, '/home');
@@ -71,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
               duration: const Duration(seconds: 4),
             ),
           );
@@ -79,8 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       builder: (context, state) {
         final isLoading = state is AuthLoading;
-        
+
         return Scaffold(
+          backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: Center(
@@ -89,6 +106,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      // Logo (match SignUpScreen)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          width: 300,
+                          height: 100,
+                        ),
+                      ),
+
                       const Text(
                         "Sign In",
                         style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -98,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       /// Email
                       TextFormField(
                         controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           labelText: "Email",
                           prefixIcon: Icon(Icons.email),
@@ -151,27 +179,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: isLoading ? null : _resetPassword,
                             child: const Text("Forgot password?"),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const SignUpScreen(),
-                                ),
-                              );
-                            },
-                            child: const Text("Create account"),
-                          ),
                         ],
                       ),
                       const SizedBox(height: 15),
 
-                      /// Login button
+                      /// Login button (styled like SignUp)
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrange,
+                            backgroundColor: AppColors.buttonPrimary,
                             padding: const EdgeInsets.symmetric(vertical: 15),
                           ),
                           onPressed: isLoading ? null : _login,
@@ -186,34 +203,64 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )
                               : const Text(
                                   "Sign In",
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                         ),
                       ),
 
                       const SizedBox(height: 20),
-                      const Text("Or Sign In With"),
+                      const Text("Sign-In With"),
                       const SizedBox(height: 10),
 
                       /// Social login buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.g_mobiledata, size: 40),
+                          // Google sign-in
+                          GestureDetector(
+                            onTap: () {},
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white,
+                                child: Image.asset(
+                                  'assets/images/google.jpg',
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
                           ),
                           const SizedBox(width: 15),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.facebook, size: 35),
-                          ),
-                          const SizedBox(width: 15),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.close, size: 35),
-                          ),
+                          // Facebook sign-in
+                          GestureDetector(
+                            onTap: () {},
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.white, // Facebook blue
+                                child: const Icon(
+                                  Icons.facebook,
+                                  size: 50,
+                                  color: Color(0xFF1877F2),
+                                ),
+                              ),
+                            ),
                         ],
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      /// Create account quick link
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const SignUpScreen()),
+                          );
+                        },
+                        child: const Text(
+                          "Don't have an account? Sign Up",
+                          style: TextStyle(color: Colors.black, fontSize: 16,),
+                        ),
                       ),
                     ],
                   ),

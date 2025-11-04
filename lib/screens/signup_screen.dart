@@ -34,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (passwordController.text != confirmPasswordController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Passwords don't match ❌"),
+            content: Text("Passwords don't match"),
             backgroundColor: Colors.red,
           ),
         );
@@ -58,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                'Account created successfully! ✅\nPlease verify your email.',
+                'Account created successfully!\nPlease verify your email.',
               ),
               backgroundColor: Colors.green,
               duration: Duration(seconds: 3),
@@ -79,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
+          backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: Center(
@@ -88,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
+                        padding: const EdgeInsets.only(bottom: 30),
                         child: Image.asset(
                           "assets/images/logo.png",
                           width: 300,
@@ -220,7 +221,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
+
+                      /// Social login buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Google sign-in
+                          GestureDetector(
+                            onTap: () {},
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.white,
+                              child: Image.asset(
+                                'assets/images/google.jpg',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          // Facebook sign-in
+                          GestureDetector(
+                            onTap: () {},
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.white, // Facebook blue
+                              child: const Icon(
+                                Icons.facebook,
+                                size: 50,
+                                color: Color(0xFF1877F2),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
 
                       /// Already have account
                       TextButton(

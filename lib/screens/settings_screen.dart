@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidden_treasures/constants/app_colors.dart';
+import '../cubits/auth/auth_cubit.dart';
 import '../widgets/settings_tile.dart';
 import '../widgets/section_title.dart';
 
@@ -11,9 +13,51 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  bool isLoading = false;
   bool darkMode = false;
   bool twoFactorAuth = false;
   String language = 'English';
+
+  Future<void> _resetPassword() async {
+    if (_emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter your email'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    setState(() => isLoading = true);
+    final authCubit = context.read<AuthCubit>();
+    try {
+      await authCubit.sendPasswordResetEmail(_emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password reset email sent'),
+          backgroundColor: AppColors.success,
+        ),
+      );
+      Navigator.pop(context); // Close the dialog
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send reset email: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailing: Switch(
               value: darkMode,
               onChanged: (value) => setState(() => darkMode = value),
-              activeColor: const Color(0xFFEF5350),
+              activeColor: const Color(0xFFFF7643),
             ),
           ),
           const SizedBox(height: 25),
@@ -55,7 +99,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailing: Switch(
               value: twoFactorAuth,
               onChanged: (value) => setState(() => twoFactorAuth = value),
-              activeColor: const Color(0xFFEF5350),
+              activeColor: const Color(0xFFFF7643),
             ),
           ),
           const SizedBox(height: 15),
@@ -63,12 +107,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () => showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Change Password'),
-                content: const Text('Password change feature coming soon!'),
+                backgroundColor: Colors.white,
+                title: const Text('Reset Password',style: TextStyle(color: AppColors.secondary),),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                        'Enter your email to receive a password reset link.'),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ],
+                ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
+                    child: const Text('Cancel',style: TextStyle(color: AppColors.secondary),),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.buttonPrimary,
+                    ),
+                    onPressed: isLoading ? null : _resetPassword,
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text('Send Link',style: TextStyle(color: Colors.white),),
                   ),
                 ],
               ),

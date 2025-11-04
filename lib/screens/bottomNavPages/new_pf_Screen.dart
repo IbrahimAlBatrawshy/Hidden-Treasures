@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hidden_treasures/models/user_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
+import 'package:hidden_treasures/cubits/user_profile/user_profile_cubit.dart';
+import 'package:hidden_treasures/cubits/user_profile/user_profile_state.dart';
 
 class newProfileScreen extends StatelessWidget {
   const newProfileScreen({super.key});
@@ -8,17 +10,18 @@ class newProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3E0),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.secondary,
+        foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          "Profile",
+        title: Text(
+            'Profile',
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
       ),
@@ -57,7 +60,9 @@ class newProfileScreen extends StatelessWidget {
             ProfileMenu(
               text: "Log Out",
               icon: Icons.logout_outlined,
-              press: () {},
+              press: () {
+                Navigator.pushNamed(context, '/logout');
+              },
             ),
           ],
         ),
@@ -71,55 +76,62 @@ class ProfilePic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserModel user = UserModel.users.first;
-
-    return Column(
-      children: [
-        SizedBox(
-          height: 115,
-          width: 115,
-          child: Stack(
-            fit: StackFit.expand,
-            clipBehavior: Clip.none,
-            children: [
-              CircleAvatar(backgroundImage: user.image),
-              Positioned(
-                right: -16,
-                bottom: 0,
-                child: SizedBox(
-                  height: 46,
-                  width: 46,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        side: const BorderSide(color: Colors.white),
+    return BlocBuilder<UserProfileCubit, UserProfileState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 115,
+              width: 115,
+              child: Stack(
+                fit: StackFit.expand,
+                clipBehavior: Clip.none,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: state.photoUrl != null
+                        ? NetworkImage(state.photoUrl!)
+                        : const AssetImage("assets/images/p1.jpg")
+                            as ImageProvider,
+                  ),
+                  Positioned(
+                    right: -16,
+                    bottom: 0,
+                    child: SizedBox(
+                      height: 46,
+                      width: 46,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            side: const BorderSide(color: Colors.white),
+                          ),
+                          backgroundColor: const Color(0xFFF5F6F9),
+                        ),
+                        onPressed: () {},
+                        child: const Icon(
+                          Icons.camera_alt,
+                          color: Color(0xFF757575),
+                          size: 20,
+                        ),
                       ),
-                      backgroundColor: const Color(0xFFF5F6F9),
-                    ),
-                    onPressed: () {},
-                    child: const Icon(
-                      Icons.camera_alt,
-                      color: Color(0xFF757575),
-                      size: 20,
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          user.userName,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-      ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              state.displayName ?? "",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -147,7 +159,7 @@ class ProfileMenu extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          backgroundColor: const Color(0xFFF5F6F9),
+          backgroundColor: Colors.white,
         ),
         onPressed: press,
         child: Row(

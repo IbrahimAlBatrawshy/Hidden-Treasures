@@ -53,7 +53,7 @@ class NotificationToggle extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: const Color(0xFFEF5350),
+            activeColor: const Color(0xFFFF7643),
           ),
         ],
       ),

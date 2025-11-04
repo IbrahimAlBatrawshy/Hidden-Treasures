@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidden_treasures/cubits/auth/auth_cubit.dart';
 
 class LogOutScreen extends StatelessWidget {
-  const LogOutScreen({Key? key}) : super(key: key);
+  const LogOutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final email = user?.email ?? 'Not available';
+    final lastSignIn = user?.metadata.lastSignInTime;
+    final lastLoginText = lastSignIn != null
+        ? lastSignIn.toLocal().toString().split('.').first // simple formatting
+        : 'Not available';
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF3E0),
+      backgroundColor: Color(0xFFFFF3E0),
       appBar: AppBar(
-        title: const Text('Log Out', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFFEF5350),
+        centerTitle: true,
+        title: const Text(
+          'Log-Out',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        backgroundColor: AppColors.secondary,
       ),
       body: Center(
         child: Padding(
@@ -21,7 +41,7 @@ class LogOutScreen extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEF5350),
+                  color: AppColors.secondary,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.logout, size: 50, color: Colors.white),
@@ -33,7 +53,7 @@ class LogOutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               const Text(
-                'Are you sure you want to log out? You will need to log in again to access your account.',
+                'Are you sure you want to log out?',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
@@ -44,16 +64,16 @@ class LogOutScreen extends StatelessWidget {
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        side: const BorderSide(
-                          color: Color(0xFFEF5350),
+                        side: BorderSide(
+                          color: AppColors.secondary,
                           width: 2,
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
-                      child: const Text(
+                      child: Text(
                         'Cancel',
                         style: TextStyle(
-                          color: Color(0xFFEF5350),
+                          color: AppColors.secondary,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -64,23 +84,24 @@ class LogOutScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFEF5350),
+                        backgroundColor: AppColors.secondary,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                       ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Logged out successfully!'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LogOutScreen(),
-                          ),
-                          (route) => false,
-                        );
+                      onPressed: () async {
+                        try {
+                          await context.read<AuthCubit>().signOut();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Logged out successfully!'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to log out: $e')),
+                          );
+                        }
                       },
                       child: const Text(
                         'Log Out',
@@ -109,32 +130,32 @@ class LogOutScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: const Color(0x0D000000), // ~5% black (ARGB)
                       blurRadius: 8,
                     ),
                   ],
                 ),
-                child: const Column(
+                child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Email:',
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        Text('john.doe@example.com'),
+                        Text(email),
                       ],
                     ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Last Login:',
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        Text('Today at 10:30 AM'),
+                        Text(lastLoginText),
                       ],
                     ),
                   ],

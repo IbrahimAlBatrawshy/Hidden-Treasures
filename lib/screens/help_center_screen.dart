@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
 import '../models/faq_item.dart';
 import '../widgets/faq_widget.dart';
 import '../widgets/section_title.dart';
@@ -32,43 +33,34 @@ class HelpCenterScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF3E0),
+      backgroundColor: Color(0xFFFFF3E0),
       appBar: AppBar(
-        title: const Text('Help Center', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFFEF5350),
+        centerTitle: true,
+        title: const Text(
+          'Help Center',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        backgroundColor: AppColors.secondary,
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          Container(
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
-              ],
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search for help...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[100],
-              ),
-            ),
-          ),
           const SizedBox(height: 25),
           const SectionTitle('Frequently Asked Questions'),
           const SizedBox(height: 15),
           ...faqs
               .map(
-                (faq) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                (faq) => Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: FAQWidget(item: faq),
                 ),
               )
@@ -76,7 +68,7 @@ class HelpCenterScreen extends StatelessWidget {
           const SizedBox(height: 25),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFEF5350),
+              backgroundColor: AppColors.secondary,
               padding: const EdgeInsets.symmetric(vertical: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -85,14 +77,19 @@ class HelpCenterScreen extends StatelessWidget {
             onPressed: () => showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Contact Support'),
+                backgroundColor: Colors.white,
+                title: const Text('Contact Support',
+                  style: TextStyle(color: AppColors.secondary, fontSize: 25),
+                ),
                 content: const Text(
                   'Email: support@example.com\nPhone: +1-800-SUPPORT',
                 ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('Close'),
+                    child: const Text('Close',
+                      style: TextStyle(color: AppColors.secondary, fontSize: 16),
+                    )
                   ),
                 ],
               ),

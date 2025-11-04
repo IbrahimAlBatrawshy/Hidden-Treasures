@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hidden_treasures/screens/new_pf_Screen.dart';
+import 'package:hidden_treasures/screens/bottomNavPages/new_pf_Screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:hidden_treasures/screens/bottomNavPages/Profile_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/chats/chat_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/fav_screen.dart';
 import 'package:hidden_treasures/screens/car/carRental_screen.dart';
@@ -61,7 +60,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/settings',
+        initialRoute: '/splash',
         routes: {
           '/splash': (context) => const SplashScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
@@ -79,7 +78,7 @@ class MyApp extends StatelessWidget {
           '/hotel': (context) => const HotelScreen(),
           '/event': (context) => const EventScreen(),
           '/carrental': (context) => const CarrentalScreen(),
-          '/profile': (context) => const ProfileScreen(),
+          '/profile': (context) => const newProfileScreen(),
           '/favourites': (context) => const FavouritsScreen(),
           '/chat': (context) => const ChatScreen(),
           '/newprofile': (context) => const newProfileScreen(),

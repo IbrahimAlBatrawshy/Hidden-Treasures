@@ -27,20 +27,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: const Color(0xFFFFF3E0),
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.secondary,
         elevation: 0,
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: AppColors.textPrimary),
+        title: const Text(
+          'Payment',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         ),
-        iconTheme: IconThemeData(color: AppColors.textPrimary),
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -54,27 +60,33 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   obscureCardCvv: true,
                   isHolderNameVisible: true,
                   cardBgColor: AppColors.secondary,
-                  textStyle: TextStyle(color: AppColors.textWhite),
+                  textStyle: const TextStyle(color: AppColors.textWhite),
                   onCreditCardWidgetChange: (_) {},
                 ),
-
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.backgroundSecondary,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.shadowLight,
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         'Amount',
                         style: TextStyle(color: AppColors.textSecondary),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         widget.amountText,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
@@ -82,8 +94,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ],
                   ),
                 ),
-
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CreditCardForm(
                   formKey: formKey,
                   cardNumber: cardNumber,
@@ -102,30 +113,65 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   obscureCvv: true,
                   obscureNumber: true,
                   isHolderNameVisible: true,
-                  inputConfiguration: const InputConfiguration(
+                  inputConfiguration: InputConfiguration(
                     cardNumberDecoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Number',
+                      labelText: 'Card Number',
                       hintText: 'XXXX XXXX XXXX XXXX',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.secondary),
+                      ),
                     ),
                     expiryDateDecoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: 'Expiry Date',
                       hintText: 'MM/YY',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.secondary),
+                      ),
                     ),
                     cvvCodeDecoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: 'CVV',
                       hintText: 'XXX',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.secondary),
+                      ),
                     ),
                     cardHolderDecoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: 'Card Holder',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.secondary),
+                      ),
                     ),
                   ),
                 ),
-
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -139,7 +185,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ),
                       elevation: 0,
                     ),
-                    child: Text(
+                    child: const Text(
                       'Pay Now',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -157,16 +203,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
     if (formKey.currentState?.validate() ?? false) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Payment submitted .'),
-          backgroundColor: AppColors.secondary,
+          content: Text('Payment submitted successfully!'),
+          backgroundColor: AppColors.success,
         ),
       );
       Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please complete valid card details'),
-          backgroundColor: AppColors.secondary,
+          content: Text('Please enter valid card details'),
+          backgroundColor: AppColors.error,
         ),
       );
     }

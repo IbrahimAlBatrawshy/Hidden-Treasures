@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hidden_treasures/constants/app_colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
@@ -401,9 +402,17 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Map & Directions'),
-        backgroundColor: Colors.deepOrange,
+        title: Text(
+          'Map & Directions',
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        backgroundColor: AppColors.secondary,
         foregroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
@@ -654,8 +663,8 @@ class _MapScreenState extends State<MapScreen> {
             ),
 
           Positioned(
-            right: 16,
-            bottom: 100,
+            right: 10,
+            bottom: 10,
             child: FloatingActionButton(
               heroTag: 'location',
               backgroundColor: Colors.white,
@@ -666,8 +675,8 @@ class _MapScreenState extends State<MapScreen> {
 
           if (_routePoints.isNotEmpty)
             Positioned(
-              right: 16,
-              bottom: 32,
+              right: 10,
+              bottom: 100,
               child: FloatingActionButton(
                 heroTag: 'clear',
                 backgroundColor: Colors.white,
