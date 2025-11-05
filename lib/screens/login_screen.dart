@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hidden_treasures/cubits/auth/auth_cubit.dart';
 import 'package:hidden_treasures/cubits/auth/auth_state.dart';
 import 'package:hidden_treasures/constants/app_colors.dart';
@@ -33,6 +36,31 @@ class _LoginScreenState extends State<LoginScreen> {
         passwordController.text,
       );
     }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+  final googleSignIn = GoogleSignIn();
+  await googleSignIn.signOut(); // optional: forces picker
+
+  final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+  final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+
+  return await FirebaseAuth.instance.signInWithCredential(credential);
+}
+
+  // Facebook login
+  Future<UserCredential> signInWithFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
   Future<void> _resetPassword() async {
@@ -118,7 +146,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       const Text(
                         "Sign In",
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 30),
 
@@ -153,7 +184,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                             ),
                             onPressed: () {
                               setState(() {
@@ -203,7 +236,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )
                               : const Text(
                                   "Sign In",
-                                  style: TextStyle(fontSize: 16, color: Colors.white),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                         ),
                       ),
@@ -218,32 +254,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           // Google sign-in
                           GestureDetector(
-                            onTap: () {},
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.white,
-                                child: Image.asset(
-                                  'assets/images/google.jpg',
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.contain,
-                                ),
+                            onTap: () {
+                              signInWithGoogle();
+                            },
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.white,
+                              child: Image.asset(
+                                'assets/images/google.jpg',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.contain,
                               ),
+                            ),
                           ),
                           const SizedBox(width: 15),
                           // Facebook sign-in
                           GestureDetector(
                             onTap: () {},
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.white, // Facebook blue
-                                child: const Icon(
-                                  Icons.facebook,
-                                  size: 50,
-                                  color: Color(0xFF1877F2),
-                                ),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Colors.white, // Facebook blue
+                              child: const Icon(
+                                Icons.facebook,
+                                size: 50,
+                                color: Color(0xFF1877F2),
                               ),
                             ),
+                          ),
                         ],
                       ),
 
@@ -254,12 +292,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const SignUpScreen()),
+                            MaterialPageRoute(
+                              builder: (_) => const SignUpScreen(),
+                            ),
                           );
                         },
                         child: const Text(
                           "Don't have an account? Sign Up",
-                          style: TextStyle(color: Colors.black, fontSize: 16,),
+                          style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                       ),
                     ],

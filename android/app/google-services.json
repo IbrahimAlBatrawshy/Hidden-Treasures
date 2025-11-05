@@ -12,7 +12,12 @@
           "package_name": "com.example.hidden_treasures"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "478195767837-ocd6pefmgtc1v19f3f5legjoagn202k1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAaAzljG1mDFJnF6-T7PGe8niWks0r7r6A"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478195767837-ocd6pefmgtc1v19f3f5legjoagn202k1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "478195767837-hg0no74o7lfhahsra7tv2gpeiafiken9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hiddenTreasures"
+              }
+            }
+          ]
         }
       }
     }

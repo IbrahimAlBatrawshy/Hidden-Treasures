@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import '../../models/event_model.dart';
 import '../../constants/app_colors.dart';
@@ -6,11 +7,7 @@ import '../../componets/componets.dart';
 class EventDetailsScreen extends StatefulWidget {
   final Event event;
 
-  const EventDetailsScreen({
-    super.key,
-    required this.event,
-  });
-
+  const EventDetailsScreen({super.key, required this.event});
 
   @override
   State<EventDetailsScreen> createState() => _EventDetailsScreenState();
@@ -38,7 +35,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        title:  Text(
+        title: Text(
           'Details',
           style: TextStyle(
             color: Colors.white,
@@ -59,14 +56,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 Container(
                   height: 240,
                   padding: EdgeInsets.symmetric(vertical: 5),
-                  margin:  EdgeInsets.symmetric(horizontal: 5),
+                  margin: EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.shadowLight,
                         blurRadius: 8,
-                        offset:  Offset(0, 4),
+                        offset: Offset(0, 4),
                       ),
                     ],
                   ),
@@ -82,7 +79,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
                               color: AppColors.backgroundSecondary,
-                              child: Icon(Icons.event, size: 50, color: AppColors.textLight),
+                              child: Icon(
+                                Icons.event,
+                                size: 50,
+                                color: AppColors.textLight,
+                              ),
                             );
                           },
                         ),
@@ -98,7 +99,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             });
                           },
                           child: Container(
-                            padding:  EdgeInsets.all(8),
+                            padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: AppColors.background,
                               shape: BoxShape.circle,
@@ -106,13 +107,17 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                 BoxShadow(
                                   color: AppColors.shadowLight,
                                   blurRadius: 4,
-                                  offset:  Offset(0, 2),
+                                  offset: Offset(0, 2),
                                 ),
                               ],
                             ),
                             child: Icon(
-                              isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: isFavorite ? AppColors.favorite : AppColors.textLight,
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite
+                                  ? AppColors.favorite
+                                  : AppColors.textLight,
                               size: 20,
                             ),
                           ),
@@ -333,12 +338,18 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Booking functionality coming soon!'),
-                                backgroundColor: AppColors.secondary,
-                              ),
-                            );
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.info,
+                              animType: AnimType.rightSlide,
+                              title: 'Warning',
+                              desc:
+                                  'Are you sure you want to proceed to payment?',
+                              btnCancelOnPress: () {},
+                              btnOkOnPress: () {
+                                Navigator.pushNamed(context, '/payement');
+                              },
+                            ).show();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.secondary,

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hidden_treasures/constants/app_colors.dart';
 import 'package:hidden_treasures/cubits/auth/auth_cubit.dart';
 import 'package:hidden_treasures/cubits/auth/auth_state.dart';
@@ -49,6 +51,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
     }
   }
+
+
+  // login with google
+  Future<UserCredential> _loginWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +247,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         children: [
                           // Google sign-in
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              _loginWithGoogle();
+                            },
                             child: CircleAvatar(
                               radius: 30,
                               backgroundColor: Colors.white,

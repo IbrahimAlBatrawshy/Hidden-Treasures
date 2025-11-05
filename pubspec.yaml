@@ -54,9 +54,12 @@ dependencies:
   google_fonts: ^6.3.2
   flutter_icons_plus: ^1.0.3
   flutter_svg: ^2.2.1
-  google_sign_in: ^6.1.0
+  google_sign_in: '^6.3.0'
   flutter_facebook_auth: ^7.1.2
   shared_preferences: ^2.1.0
+  cloud_functions: ^6.0.3
+  awesome_dialog: ^3.3.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
