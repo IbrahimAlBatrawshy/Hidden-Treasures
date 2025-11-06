@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../models/hotel_model.dart';
-import '../../componets/componets.dart';
 import '../../constants/app_colors.dart';
 import 'hotel_details_screen.dart';
 

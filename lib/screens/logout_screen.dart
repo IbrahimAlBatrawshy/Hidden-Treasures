@@ -22,11 +22,7 @@ class LogOutScreen extends StatelessWidget {
     final email = user?.email ?? 'Not available';
     final lastSignIn = user?.metadata.lastSignInTime;
     final lastLoginText = lastSignIn != null
-        ? lastSignIn
-              .toLocal()
-              .toString()
-              .split('.')
-              .first // simple formatting
+        ? lastSignIn.toLocal().toString().split('.').first // simple formatting
         : 'Not available';
 
     return Scaffold(
@@ -77,7 +73,10 @@ class LogOutScreen extends StatelessWidget {
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        side: BorderSide(color: AppColors.secondary, width: 2),
+                        side: BorderSide(
+                          color: AppColors.secondary,
+                          width: 2,
+                        ),
                       ),
                       onPressed: () => Navigator.pop(context),
                       child: Text(
@@ -99,16 +98,14 @@ class LogOutScreen extends StatelessWidget {
                       ),
                       onPressed: () async {
                         try {
-                          
+                          await context.read<AuthCubit>().signOut();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Logged out successfully!'),
                               duration: Duration(seconds: 2),
                             ),
                           );
-                          Navigator.of(
-                            context,
-                          ).pushNamedAndRemoveUntil('/login', (route) => false);
+                          Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Failed to log out: $e')),

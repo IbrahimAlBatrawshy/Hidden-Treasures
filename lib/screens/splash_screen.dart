@@ -47,14 +47,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3E0),
       body: ListView(
         children: [
           Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 260.0),
               child: Image.asset(
-                "assets/images/logo.png",
+                "assets/images/hidden_treasures.png",
                 width: 288,
                 height: 114,
               ),

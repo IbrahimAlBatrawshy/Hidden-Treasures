@@ -97,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFFFFF3E0),
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: Center(
@@ -109,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 30),
                         child: Image.asset(
-                          "assets/images/logo.png",
+                          "assets/images/hidden_treasures.png",
                           width: 300,
                           height: 100,
                         ),
@@ -252,26 +252,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             },
                             child: CircleAvatar(
                               radius: 30,
-                              backgroundColor: Colors.white,
+                              backgroundColor: Color(0xFFFFF3E0),
                               child: Image.asset(
-                                'assets/images/google.jpg',
-                                width: 40,
-                                height: 40,
+                                'assets/images/google.png',
+                                width: 50,
+                                height: 50,
                                 fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          // Facebook sign-in
-                          GestureDetector(
-                            onTap: () {},
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.white, // Facebook blue
-                              child: const Icon(
-                                Icons.facebook,
-                                size: 50,
-                                color: Color(0xFF1877F2),
                               ),
                             ),
                           ),

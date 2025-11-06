@@ -99,12 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {
         if (state is AuthAuthenticated) {
           if (state.emailVerified) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Welcome back, ${state.displayName}!'),
-                backgroundColor: AppColors.success,
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text('Welcome back, ${state.displayName}!'),
+            //     backgroundColor: AppColors.success,
+            //   ),
+            // );
             Navigator.pushReplacementNamed(context, '/home');
           } else {
             Navigator.pushReplacementNamed(context, '/email-verification');
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFFFFF3E0),
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: Center(
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 40),
                         child: Image.asset(
-                          'assets/images/logo.png',
+                          'assets/images/hidden_treasures.png',
                           width: 300,
                           height: 100,
                         ),
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           TextButton(
                             onPressed: isLoading ? null : _resetPassword,
-                            child: const Text("Forgot password?"),
+                            child: const Text("Forgot password?", style: TextStyle(color: Colors.black),),
                           ),
                         ],
                       ),
@@ -259,26 +259,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             child: CircleAvatar(
                               radius: 30,
-                              backgroundColor: Colors.white,
+                              backgroundColor: Color(0xFFFFF3E0),
                               child: Image.asset(
-                                'assets/images/google.jpg',
-                                width: 40,
-                                height: 40,
+                                'assets/images/google.png',
+                                width: 50,
+                                height: 50,
                                 fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          // Facebook sign-in
-                          GestureDetector(
-                            onTap: () {},
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.white, // Facebook blue
-                              child: const Icon(
-                                Icons.facebook,
-                                size: 50,
-                                color: Color(0xFF1877F2),
                               ),
                             ),
                           ),

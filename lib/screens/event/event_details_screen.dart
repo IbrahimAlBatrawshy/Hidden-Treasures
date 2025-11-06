@@ -2,7 +2,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import '../../models/event_model.dart';
 import '../../constants/app_colors.dart';
-import '../../componets/componets.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   final Event event;
