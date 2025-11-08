@@ -262,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               signInWithGoogle();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Signing in with Google...'),
+                                  content: Text('Signing in with Google......'),
                                 ),
                               );
                             },
@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text(
                           "Don't have an account? Sign Up",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
+                          style: TextStyle(color: Colors.black, fontSize: 17),
                         ),
                       ),
                     ],
