@@ -39,19 +39,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<UserCredential> signInWithGoogle() async {
-  final googleSignIn = GoogleSignIn();
-  await googleSignIn.signOut(); // optional: forces picker
+    final googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut(); // optional: forces picker
 
-  final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-  final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
 
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken,
-  );
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
 
-  return await FirebaseAuth.instance.signInWithCredential(credential);
-}
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 
   // Facebook login
   Future<UserCredential> signInWithFacebook() async {
@@ -210,7 +211,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           TextButton(
                             onPressed: isLoading ? null : _resetPassword,
-                            child: const Text("Forgot password?", style: TextStyle(color: Colors.black),),
+                            child: const Text(
+                              "Forgot password?",
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ],
                       ),
@@ -256,6 +260,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           GestureDetector(
                             onTap: () {
                               signInWithGoogle();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Signing in with Google...'),
+                                ),
+                              );
                             },
                             child: CircleAvatar(
                               radius: 30,

@@ -73,7 +73,8 @@ List<Event> featuredEvents = [
     name: 'Music Festival 2024',
     location: 'Central Park',
     address: 'New York, NY',
-    imageUrl: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=500',
+    imageUrl:
+        'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=500',
     rating: 4.8,
     price: 75.0,
     date: '2024-06-15',
@@ -88,7 +89,8 @@ List<Event> featuredEvents = [
     name: 'Food & Wine Expo',
     location: 'Convention Center',
     address: 'San Francisco, CA',
-    imageUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500',
+    imageUrl:
+        'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500',
     rating: 4.6,
     price: 45.0,
     date: '2024-07-20',
@@ -103,7 +105,8 @@ List<Event> featuredEvents = [
     name: 'Tech Conference 2024',
     location: 'Tech Hub',
     address: 'Austin, TX',
-    imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500',
+    imageUrl:
+        'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500',
     rating: 4.9,
     price: 299.0,
     date: '2024-08-10',
@@ -121,7 +124,8 @@ List<Event> popularEvents = [
     name: 'Art Gallery Opening',
     location: 'Modern Art Museum',
     address: 'Los Angeles, CA',
-    imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=500',
+    imageUrl:
+        'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=500',
     rating: 4.5,
     price: 25.0,
     date: '2024-06-25',
@@ -136,7 +140,8 @@ List<Event> popularEvents = [
     name: 'Comedy Night',
     location: 'Comedy Club',
     address: 'Chicago, IL',
-    imageUrl: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=500',
+    imageUrl:
+        'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=500',
     rating: 4.7,
     price: 35.0,
     date: '2024-07-05',
@@ -151,7 +156,8 @@ List<Event> popularEvents = [
     name: 'Yoga Retreat',
     location: 'Mountain Resort',
     address: 'Denver, CO',
-    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500',
+    imageUrl:
+        'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500',
     rating: 4.8,
     price: 150.0,
     date: '2024-08-15',
@@ -166,7 +172,8 @@ List<Event> popularEvents = [
     name: 'Wine Tasting',
     location: 'Vineyard',
     address: 'Napa Valley, CA',
-    imageUrl: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=500',
+    imageUrl:
+        'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=500',
     rating: 4.6,
     price: 65.0,
     date: '2024-09-10',
@@ -175,5 +182,22 @@ List<Event> popularEvents = [
     category: 'Food & Drink',
     availableTickets: 40,
     organizer: 'Wine Society',
+  ),
+  Event(
+    id: '7',
+    name: 'Giza Pyramids Tour',
+    location: 'Giza, Egypt',
+    address: 'Al Haram, Nazlet El-Semman, Giza Governorate, Egypt',
+    imageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/e/e3/Kheops-Pyramid.jpg',
+    rating: 4.8,
+    price: 450.0,
+    date: '2025-12-20',
+    time: '09:00 AM',
+    description:
+        'Experience one of the Seven Wonders of the Ancient World. Explore the Great Pyramid of Khufu, the Sphinx, and the fascinating history of ancient Egypt with a professional tour guide. Optional camel rides and photo stops included.',
+    category: 'Historical Tour',
+    availableTickets: 100,
+    organizer: 'Egypt Travel Experts',
   ),
 ];
