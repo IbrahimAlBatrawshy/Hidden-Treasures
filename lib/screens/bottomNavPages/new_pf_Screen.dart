@@ -88,10 +88,14 @@ class ProfilePic extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   CircleAvatar(
+                    backgroundColor: AppColors.secondary,
+                    radius: 35,
                     backgroundImage: state.photoUrl != null
                         ? NetworkImage(state.photoUrl!)
-                        : const AssetImage("assets/images/p1.jpg")
-                            as ImageProvider,
+                        : null,
+                    child: state.photoUrl == null
+                        ? const Icon(Icons.person, size: 70, color: Color(0xFFFFF3E0))
+                        : null,
                   ),
                   Positioned(
                     right: -16,
