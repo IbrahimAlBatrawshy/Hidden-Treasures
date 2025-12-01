@@ -99,12 +99,6 @@ class LogOutScreen extends StatelessWidget {
                       onPressed: () async {
                         try {
                           await context.read<AuthCubit>().signOut();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Logged out successfully!'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
                           Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(

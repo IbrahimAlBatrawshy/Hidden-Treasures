@@ -86,12 +86,20 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: CircleAvatar(
-                        backgroundImage: state.photoUrl != null
-                            ? NetworkImage(state.photoUrl!)
-                            : const AssetImage("assets/images/p1.jpg")
-                                as ImageProvider,
-                        radius: 35),
+                    leading: Stack(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: AppColors.secondary,
+                          radius: 35,
+                          backgroundImage: state.photoUrl != null
+                              ? NetworkImage(state.photoUrl!)
+                              : null,
+                          child: state.photoUrl == null
+                              ? const Icon(Icons.person, size: 35, color: Color(0xFFFFF3E0))
+                              : null,
+                        ),
+                      ],
+                    ),
                     title: Text(
                       "Hi, ${state.displayName}",
                       style: const TextStyle(
