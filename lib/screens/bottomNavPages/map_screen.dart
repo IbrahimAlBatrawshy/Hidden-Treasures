@@ -35,10 +35,11 @@ class _MapScreenState extends State<MapScreen> {
   String? _duration;
   bool _mapReady = false;
 
-  // Egypt bounds (approx)
+  // Egypt bounds (inclusive, slightly expanded to include Sinai & border areas)
+  // southWest(lat, lon), northEast(lat, lon)
   final LatLngBounds _egyptBounds = LatLngBounds(
-    const LatLng(21.7, 24.7),
-    const LatLng(31.7, 36.9),
+    const LatLng(21.0, 24.0),
+    const LatLng(32.0, 37.2),
   );
 
   bool _isInEgypt(LatLng point) => _egyptBounds.contains(point);
@@ -69,12 +70,17 @@ class _MapScreenState extends State<MapScreen> {
       _showMessage(
         'Location permissions are permanently denied. Enable them in settings.',
       );
+      // Help user open app settings
+      await Geolocator.openAppSettings();
       return false;
     }
 
     return true;
   }
 
+  /// Get device location but enforce "Egypt only" policy:
+  /// - If returned GPS point is inside Egypt and reasonably accurate -> use it.
+  /// - Otherwise center on Cairo and do NOT use external coordinates as the app's location.
   Future<void> _getCurrentLocation() async {
     if (!mounted) return;
     setState(() => _isLoadingLocation = true);
@@ -88,7 +94,7 @@ class _MapScreenState extends State<MapScreen> {
 
       final Position position =
           await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.bestForNavigation,
+            desiredAccuracy: LocationAccuracy.best,
             timeLimit: const Duration(seconds: 15),
           ).timeout(
             const Duration(seconds: 15),
@@ -97,43 +103,103 @@ class _MapScreenState extends State<MapScreen> {
 
       if (!mounted) return;
 
+      // DEBUG: always print coords so you can paste them if something is wrong
+      debugPrint(
+        'Got GPS position -> lat: ${position.latitude}, lon: ${position.longitude}, acc: ${position.accuracy}, mocked: ${position.isMocked}',
+      );
+
       final LatLng userLatLng = LatLng(position.latitude, position.longitude);
 
-      setState(() {
-        _currentLocation = userLatLng;
-        _currentCenter = _isInEgypt(userLatLng) ? userLatLng : _cairoCenter;
-        if (!_isInEgypt(userLatLng)) {
-          _showMessage(
-            'Current location is outside Egypt. Centering on Cairo.',
-          );
+      // stricter accuracy for "valid" (meters). Tweak to your needs (100 = good)
+      final bool hasGoodAccuracy =
+          position.accuracy.isFinite && position.accuracy <= 100;
+      final bool inEgypt = _isInEgypt(userLatLng);
+      final bool isMocked = position.isMocked; // helpful for emulator detection
+
+      // Always show user's raw GPS as a marker (different color if outside Egypt or mocked)
+      final Marker userMarker = Marker(
+        width: 80,
+        height: 80,
+        point: userLatLng,
+        builder: (ctx) => Container(
+          decoration: BoxDecoration(
+            color: (inEgypt && hasGoodAccuracy && !isMocked)
+                ? Colors.blue.withOpacity(0.3)
+                : Colors.grey.withOpacity(0.35),
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: Icon(
+            Icons.my_location,
+            size: 36,
+            color: (inEgypt && hasGoodAccuracy && !isMocked)
+                ? Colors.blue
+                : Colors.grey[800],
+          ),
+        ),
+      );
+
+      if (inEgypt && hasGoodAccuracy && !isMocked) {
+        // Valid Egypt location -> use it as app current location and center map there
+        setState(() {
+          _currentLocation = userLatLng;
+          _currentCenter = userLatLng;
+          _markers = [userMarker];
+          _isLoadingLocation = false;
+        });
+
+        if (mounted && _mapReady) {
+          try {
+            _mapController.move(_currentCenter, 15.0);
+          } catch (e) {
+            debugPrint('Move map error: $e');
+          }
         }
-        _markers = [
-          if (_isInEgypt(userLatLng))
+      } else {
+        // Not valid for Egypt-only app (either outside Egypt, poor accuracy, or mocked)
+        setState(() {
+          _currentLocation = null; // treat as no valid app location
+          // Choose to center on Cairo to keep app Egypt-only behavior:
+          _currentCenter = _cairoCenter;
+          // Still show the user's raw GPS marker so you can see it on the map
+          _markers = [
+            // Cairo center marker
             Marker(
-              width: 80,
-              height: 80,
-              point: userLatLng,
-              builder: (ctx) => Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.3),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.my_location,
-                  size: 40,
-                  color: Colors.blue,
-                ),
+              width: 60,
+              height: 60,
+              point: _cairoCenter,
+              builder: (ctx) => const Icon(
+                Icons.location_on,
+                size: 36,
+                color: Colors.deepOrange,
               ),
             ),
-        ];
-        _isLoadingLocation = false;
-      });
+            // user's actual GPS (grey)
+            userMarker,
+          ];
+          _isLoadingLocation = false;
+        });
 
-      await Future.delayed(const Duration(milliseconds: 200));
-      if (mounted && _mapReady) {
-        try {
-          _mapController.move(_currentCenter, 15.0);
-        } catch (_) {}
+        // Helpful messages
+        if (isMocked) {
+          _showMessage(
+            'Location looks mocked (emulator). Set emulator location to Cairo for testing.',
+          );
+        } else if (!inEgypt) {
+          _showMessage('Current location is outside Egypt. Centered on Cairo.');
+        } else if (!hasGoodAccuracy) {
+          _showMessage('Location accuracy is poor. Centered on Cairo.');
+        }
+
+        if (mounted && _mapReady) {
+          try {
+            // keep app view on Cairo (Egypt-only). If you want to briefly show the GPS point do:
+            // _mapController.move(userLatLng, 12.0);
+            _mapController.move(_currentCenter, 12.0);
+          } catch (e) {
+            debugPrint('Move map error: $e');
+          }
+        }
       }
     } catch (e) {
       debugPrint('Location error: $e');
@@ -164,7 +230,9 @@ class _MapScreenState extends State<MapScreen> {
         if (data.isNotEmpty) {
           final double lat = double.parse(data[0]['lat'] as String);
           final double lon = double.parse(data[0]['lon'] as String);
-          return LatLng(lat, lon);
+          final LatLng found = LatLng(lat, lon);
+          if (_isInEgypt(found)) return found;
+          _showMessage('Place found but outside Egypt');
         }
       } else {
         debugPrint('Search failed with status ${response.statusCode}');
@@ -313,21 +381,15 @@ class _MapScreenState extends State<MapScreen> {
 
   void _useCurrentLocationAsStart() {
     if (_currentLocation != null) {
-      final LatLng start = _isInEgypt(_currentLocation!)
-          ? _currentLocation!
-          : _cairoCenter;
       setState(() {
-        _startPoint = start;
-        _startController.text = _isInEgypt(_currentLocation!)
-            ? 'Current Location'
-            : 'Cairo';
+        _startPoint = _currentLocation!;
+        _startController.text = 'Current Location';
       });
-      if (!_isInEgypt(_currentLocation!)) {
-        _showMessage('Current location outside Egypt. Using Cairo as start.');
-      }
       _showMessage('Using current location as start point');
     } else {
-      _showMessage('Current location not available. Please wait...');
+      _showMessage(
+        'Current location not available (Egypt-only). Please search or wait.',
+      );
       _getCurrentLocation();
     }
   }
@@ -384,7 +446,18 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ),
             ]
-          : [];
+          : [
+              Marker(
+                width: 60,
+                height: 60,
+                point: _cairoCenter,
+                builder: (ctx) => const Icon(
+                  Icons.location_on,
+                  size: 36,
+                  color: Colors.deepOrange,
+                ),
+              ),
+            ];
     });
   }
 
@@ -404,7 +477,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Map & Directions',
           style: TextStyle(
             fontSize: 26,
@@ -423,10 +496,9 @@ class _MapScreenState extends State<MapScreen> {
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
-              // Newer flutter_map API fields
               minZoom: 3.0,
               maxZoom: 18.0,
-
+              center: _currentCenter,
               onMapReady: () => setState(() => _mapReady = true),
             ),
             children: [

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidden_treasures/chat/chat_cubit..dart';
+import 'package:hidden_treasures/chat/chat_ui.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/new_pf_Screen.dart';
 import 'package:hidden_treasures/screens/paymet_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -28,6 +30,7 @@ import 'package:hidden_treasures/cubits/auth/auth_cubit.dart';
 import 'package:hidden_treasures/cubits/favorites/favorites_cubit.dart';
 import 'package:hidden_treasures/cubits/user_profile/user_profile_cubit.dart';
 import 'package:hidden_treasures/cubits/app_settings/app_settings_cubit.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,10 +61,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserProfileCubit>(create: (context) => UserProfileCubit()),
         // App settings state management with persistence
         BlocProvider<AppSettingsCubit>(create: (context) => AppSettingsCubit()),
+        // Tourist Chatbot state management
+        BlocProvider<ChatbotCubit>(create: (context) => ChatbotCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/splash',
+        initialRoute: '/tourist-chatbot',
         routes: {
           '/splash': (context) => const SplashScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
@@ -85,6 +90,7 @@ class MyApp extends StatelessWidget {
           '/newprofile': (context) => const newProfileScreen(),
           '/myacc': (context) => const MyAccountScreen(),
           '/payement': (context) => const PaymentScreen(title: 'Payment', amountText: ''),
+          '/tourist-chatbot': (context) => const TouristChatbotScreen(),
         },
       ),
     );
