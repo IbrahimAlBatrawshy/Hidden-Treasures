@@ -50,8 +50,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               ? 'Added ${restaurant.name} to favorites'
               : 'Removed ${restaurant.name} from favorites',
         ),
-        backgroundColor:
-            restaurant.isFavorite ? AppColors.favorite : AppColors.textSecondary,
+        backgroundColor: restaurant.isFavorite
+            ? AppColors.favorite
+            : AppColors.textSecondary,
       ),
     );
   }
@@ -89,8 +90,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search for restaurants...',
-                prefixIcon:
-                    const Icon(Icons.search, color: AppColors.textLight),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: AppColors.textLight,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -122,7 +125,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RestaurantDeatailsScreen(restaurant: restaurant),
+            builder: (context) =>
+                RestaurantDeatailsScreen(restaurant: restaurant),
           ),
         );
       },
@@ -148,14 +152,20 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   width: 120,
                   height: 140,
                   color: AppColors.backgroundSecondary,
-                  child: const Icon(Icons.restaurant, color: AppColors.textLight, size: 40),
+                  child: const Icon(
+                    Icons.restaurant,
+                    color: AppColors.textLight,
+                    size: 40,
+                  ),
                 ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 child: SizedBox(
                   height: 124,
                   child: Column(
@@ -174,14 +184,19 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       ),
                       Row(
                         children: [
-                          const Icon(Icons.location_on,
-                              size: 14, color: AppColors.textSecondary),
+                          const Icon(
+                            Icons.location_on,
+                            size: 14,
+                            color: AppColors.textSecondary,
+                          ),
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(
                               restaurant.address,
                               style: const TextStyle(
-                                  fontSize: 12, color: AppColors.textSecondary),
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -190,8 +205,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       ),
                       Row(
                         children: [
-                          const Icon(Icons.star,
-                              color: AppColors.star, size: 16),
+                          const Icon(
+                            Icons.star,
+                            color: AppColors.star,
+                            size: 16,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             restaurant.rating.toString(),
@@ -211,7 +229,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               padding: const EdgeInsets.only(right: 8.0),
               child: IconButton(
                 icon: Icon(
-                  restaurant.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  restaurant.isFavorite
+                      ? Icons.favorite
+                      : Icons.favorite_border,
                   color: AppColors.favorite,
                   size: 24,
                 ),

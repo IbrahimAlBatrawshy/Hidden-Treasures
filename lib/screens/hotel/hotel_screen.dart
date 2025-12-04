@@ -157,7 +157,7 @@ class _HotelScreenState extends State<HotelScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: SizedBox(
-                  height: 124, // To align with image height minus padding
+                  height: 124, 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

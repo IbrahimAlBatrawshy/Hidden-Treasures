@@ -1,4 +1,3 @@
-// lib/services/chatbot_service.dart
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -27,14 +26,13 @@ class ChatMessage {
 }
 
 class ChatbotService {
-  // 🔑 Gemini API Key
-  static const String _apiKey = 'AIzaSyBQgbl92wdeTKIuQVCKtuktAQryETxj6dI';
 
-  // ✅ NEW valid Gemini endpoint
+  static const String _apiKey = 'AIzaSyAWusznSAmprEen6De5v6EvdqwVTnSbDRE';
+
   static const String _apiUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
-  // 🌍 System prompt
+  //System prompt
   static const String _systemPrompt = '''You are an expert tourist guide ... (your prompt)''';
 
   Future<String> sendMessage(
@@ -42,7 +40,7 @@ class ChatbotService {
     List<ChatMessage> conversationHistory,
   ) async {
     try {
-      // Build conversation 
+     
       String conversationContext = _systemPrompt + '\n\n';
 
       int startIndex = conversationHistory.length > 5

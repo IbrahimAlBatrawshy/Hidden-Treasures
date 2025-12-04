@@ -1,6 +1,6 @@
-// lib/cubits/chatbot/chatbot_cubit.dart
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hidden_treasures/chat/chat_service.dart';
+import 'package:hidden_treasures/screens/chat/chat_service.dart';
 
 
 // States
@@ -71,7 +71,6 @@ class ChatbotCubit extends Cubit<ChatbotState> {
       emit(ChatbotLoaded(List.from(_conversationHistory)));
     } catch (e) {
       emit(ChatbotError(e.toString(), List.from(_conversationHistory)));
-      // Restore to loaded state after error
       await Future.delayed(const Duration(seconds: 2));
       emit(ChatbotLoaded(List.from(_conversationHistory)));
     }

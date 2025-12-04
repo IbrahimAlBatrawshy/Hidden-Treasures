@@ -5,6 +5,8 @@ class Restaurant {
   double price;
   double rating;
   bool isFavorite;
+  int phoneNumber;
+  
 
   Restaurant({
     required this.imageUrl,
@@ -13,6 +15,7 @@ class Restaurant {
     required this.price,
     required this.rating,
     this.isFavorite = false,
+    required this.phoneNumber,
   });
 }
 
@@ -24,6 +27,7 @@ final List<Restaurant> featuredRestaurants = [
     price: 45.0,
     rating: 5.0,
     isFavorite: true,
+    phoneNumber: 01256601233
   ),
   Restaurant(
     imageUrl: 'https://assets.cairo360.com/app/uploads/2023/08/01/312598415_692360272278107_7839690468544265332_n.jpg',
@@ -32,6 +36,7 @@ final List<Restaurant> featuredRestaurants = [
     price: 35.0,
     rating: 4.8,
     isFavorite: false,
+    phoneNumber: 01256608544
   ),
   Restaurant(
     imageUrl: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=500',
@@ -40,6 +45,7 @@ final List<Restaurant> featuredRestaurants = [
     price: 55.0,
     rating: 4.9,
     isFavorite: false,
+    phoneNumber: 01258501283
   ),
 ];
 
@@ -51,6 +57,7 @@ final List<Restaurant> popularRestaurants = [
     price: 25.0,
     rating: 5.0,
     isFavorite: false,
+    phoneNumber: 11266
   ),
   Restaurant(
     imageUrl: 'https://assets.cairo360.com/app/uploads/2023/08/01/312598415_692360272278107_7839690468544265332_n.jpg',
@@ -59,6 +66,7 @@ final List<Restaurant> popularRestaurants = [
     price: 20.0,
     rating: 4.7,
     isFavorite: true,
+    phoneNumber: 01256608544
   ),
   Restaurant(
     imageUrl: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=300',
@@ -67,5 +75,6 @@ final List<Restaurant> popularRestaurants = [
     price: 30.0,
     rating: 4.6,
     isFavorite: false,
+    phoneNumber: 13652
   ),
 ];

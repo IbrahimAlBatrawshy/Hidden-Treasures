@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hidden_treasures/chat/chat_cubit..dart';
-import 'package:hidden_treasures/chat/chat_ui.dart';
+import 'package:hidden_treasures/screens/chat/chat_cubit..dart';
+import 'package:hidden_treasures/screens/chat/chat_ui.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/new_pf_Screen.dart';
+import 'package:hidden_treasures/screens/hotel/hotel_booking.dart';
 import 'package:hidden_treasures/screens/paymet_screen.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:hidden_treasures/screens/bottomNavPages/chats/chat_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/fav_screen.dart';
 import 'package:hidden_treasures/screens/car/carRental_screen.dart';
 import 'package:hidden_treasures/screens/event/event_screen.dart';
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/tourist-chatbot',
+        initialRoute: '/home',
         routes: {
           '/splash': (context) => const SplashScreen(),
           '/onboarding': (context) => const OnboardingScreen(),
@@ -86,7 +86,6 @@ class MyApp extends StatelessWidget {
           '/carrental': (context) => const CarrentalScreen(),
           '/profile': (context) => const newProfileScreen(),
           '/favourites': (context) => const FavouritsScreen(),
-          '/chat': (context) => const ChatScreen(),
           '/newprofile': (context) => const newProfileScreen(),
           '/myacc': (context) => const MyAccountScreen(),
           '/payement': (context) => const PaymentScreen(title: 'Payment', amountText: ''),

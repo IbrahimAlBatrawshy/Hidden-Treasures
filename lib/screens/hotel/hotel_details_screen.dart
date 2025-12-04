@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hidden_treasures/screens/hotel/hotel_booking.dart';
 import '../../models/hotel_model.dart';
 import '../../constants/app_colors.dart';
 import '../../componets/componets.dart';
@@ -291,17 +292,17 @@ class _HotelDetailsScreenState extends State<HotelDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BookingButton(
-        text: 'Booking Now',
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Booking ${widget.hotel.name}'),
-              backgroundColor: AppColors.secondary,
-            ),
-          );
-        },
+    bottomNavigationBar: BookingButton(
+  text: 'Booking Now',
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HotelBookingScreen(hotel: widget.hotel),
       ),
+    );
+  },
+),
     );
   }
 

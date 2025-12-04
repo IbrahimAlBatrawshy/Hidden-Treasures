@@ -1,6 +1,7 @@
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidden_treasures/screens/chat/chat_ui.dart';
 import 'package:hidden_treasures/componets/componets.dart';
 import 'package:hidden_treasures/constants/app_colors.dart';
 import 'package:hidden_treasures/cubits/user_profile/user_profile_cubit.dart';
@@ -8,7 +9,6 @@ import 'package:hidden_treasures/cubits/user_profile/user_profile_state.dart';
 import 'package:hidden_treasures/models/hotel_model.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/new_pf_Screen.dart';
 import 'package:hidden_treasures/screens/notfications_screen.dart';
-import 'package:hidden_treasures/screens/bottomNavPages/chats/chat_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/fav_screen.dart';
 import 'package:hidden_treasures/screens/bottomNavPages/map_screen.dart';
 import 'package:hidden_treasures/screens/car/carRental_screen.dart';
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late final List<Widget> pages = [
     const MapScreen(),
-    const ChatScreen(),
+    const TouristChatbotScreen(),
     _buildHomePage(),
     const FavouritsScreen(),
     const newProfileScreen(),
