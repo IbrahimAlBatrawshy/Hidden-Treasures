@@ -2,102 +2,132 @@
 
 ## 💎 Project Overview
 
-**HiddenTreasures-DEPI** is a cross-platform mobile application developed using **Flutter**. It is a project focused on providing a robust and secure user authentication system, primarily leveraging **Firebase Authentication** for email and password sign-in, along with a comprehensive **Email Verification** feature.
+**HiddenTreasures-DEPI** is a robust, cross-platform mobile application developed using **Flutter**. The project is designed to be a feature-rich foundation, with a strong emphasis on secure user authentication, advanced state management, and integration of various third-party services.
 
-The project is structured as a multi-platform Flutter application, supporting:
-
+The application is built to support multiple platforms:
 *   **Mobile:** Android, iOS
 *   **Desktop:** Windows, macOS, Linux
 *   **Web**
 
-The core language is **Dart** (9.3%), with significant portions of the codebase dedicated to platform-specific configurations in **C++** (45.7%) and **CMake** (36.5%).
+The primary development language is **Dart**, with platform-specific configurations handled by **C++** and **CMake**.
 
-## 🔐 Authentication Features
+## ✨ Key Features
 
-The application features a fully implemented and secure user authentication flow using Firebase Email/Password Authentication.
+The `mo-latest` branch includes a wide array of integrated features, making it a comprehensive starting point for a modern mobile application:
 
-### Key Authentication Components:
+*   **Secure Authentication:** Full Firebase Email/Password authentication flow with sign-in, sign-up, and password reset.
+*   **Mandatory Email Verification:** Enforced email verification with an auto-checking screen, resend functionality, and a 60-second cooldown.
+*   **Advanced State Management:** Utilizes the **BLoC/Cubit** pattern with **HydratedBloc** for predictable, persistent, and scalable state management.
+*   **Location & Mapping:** Integration with Google Maps for location services, geolocation, and drawing polylines.
+*   **Credit Card Integration:** Functionality for handling credit card inputs and payment-related features.
+*   **Real-time Messaging:** Firebase Cloud Messaging for push notifications.
+*   **Social Sign-In:** Support for Google and Facebook sign-in.
+*   **Chatbot:** Inclusion of a dedicated chatbot feature.
 
-| Component | File | Features Implemented |
-| :--- | :--- | :--- |
-| **Login Screen** | `login_screen.dart` | Sign-in, password visibility toggle, loading indicator, error handling, and forgot password functionality. |
-| **Sign Up Screen** | `signup_screen.dart` | User registration, password validation, display name update, and automatic email verification sending. |
-| **Auth Service** | `services/auth_service.dart` | Centralized service for all authentication operations: sign-in, registration, sign-out, password reset, email verification, and profile updates. |
+## ⚙️ Technology Stack and Dependencies
 
-### Email Verification Enforcement
+The project leverages a modern Flutter stack with the following key dependencies (from `pubspec.yaml`):
 
-A dedicated **Email Verification Screen** (`email_verification_screen.dart`) ensures that users cannot access the main application until their email address is verified.
+| Category | Package | Version | Purpose |
+| :--- | :--- | :--- | :--- |
+| **State Management** | `flutter_bloc` | `^8.1.6` | Core BLoC/Cubit implementation for state management. |
+| | `equatable` | `^2.0.5` | Value equality for BLoC states and events. |
+| | `hydrated_bloc` | `^9.1.5` | Automatic state persistence to local storage. |
+| **Firebase** | `firebase_core` | `^4.1.1` | Core Firebase services initialization. |
+| | `firebase_auth` | `^6.1.0` | Email/Password and social authentication. |
+| | `firebase_messaging` | `^16.0.2` | Push notifications and real-time messaging. |
+| | `cloud_functions` | `^6.0.3` | Calling Firebase Cloud Functions. |
+| **Mapping & Location** | `google_maps_flutter` | `^2.13.1` | Displaying and interacting with Google Maps. |
+| | `geolocator` | `^14.0.2` | Accessing the device's current location. |
+| | `flutter_polyline_points` | `^3.1.0` | Decoding encoded polylines for routes. |
+| | `flutter_map` | `^5.0.0` | Open-source map library. |
+| | `latlong2` | `^0.9.1` | Latitude and longitude utilities. |
+| **User Interface** | `lottie` | `^3.3.2` | Displaying Lottie animations. |
+| | `flutter_svg` | `^2.2.1` | Rendering SVG files. |
+| | `awesome_dialog` | `^3.3.0` | Customizable, animated dialogs. |
+| | `circle_nav_bar` | `^2.2.0` | Custom circular navigation bar. |
+| **Utility & Other** | `flutter_credit_card` | `^4.1.0` | UI for credit card input. |
+| | `permission_handler` | `^12.0.1` | Managing device permissions (e.g., location). |
+| | `shared_preferences` | `^2.1.0` | Simple persistent storage for key-value pairs. |
+| | `chat_bot` | `^1.3.2` | Chatbot implementation. |
+| | `intl` | `^0.18.2` | Internationalization and localization. |
 
-| Feature | Description |
-| :--- | :--- |
-| **Automatic Checking** | The screen automatically checks the verification status every 3 seconds and redirects to the home screen upon success. |
-| **Resend Email** | A one-click option to resend the verification email with a 60-second cooldown to prevent spam. |
-| **Manual Check** | A "I've Verified My Email" button for an instant status check. |
-| **User Flow** | Unverified users are redirected to this screen upon sign-in, and new sign-ups are automatically sent here. |
+## 🏗️ Application Architecture
+
+The project follows a clean, maintainable architecture centered around the **BLoC/Cubit** pattern for state management.
+
+### State Management (BLoC/Cubit)
+
+*   **Core Principle:** All application state is managed by **Cubits** (a simpler version of BLoC) to ensure a clear separation of concerns between the UI and business logic.
+*   **Persistence:** **HydratedBloc** is used to automatically persist and rehydrate the state of specific Cubits (e.g., `FavoritesCubit`, `UserProfileCubit`, `AppSettingsCubit`) to local storage, ensuring data survives app restarts.
+*   **Cubits Implemented:**
+    *   `AuthCubit`: Handles all authentication states and operations.
+    *   `FavoritesCubit`: Manages user-specific favorites (e.g., hotels, restaurants) with persistence.
+    *   `UserProfileCubit`: Manages user profile data and synchronization with Firebase.
+    *   `AppSettingsCubit`: Manages app-wide settings like dark mode and language.
+
+### Authentication Flow
+
+The authentication is handled by `firebase_auth` and is tightly integrated with the state management system.
+
+1.  **Sign Up:** User registers, and a verification email is automatically sent.
+2.  **Redirection:** The user is immediately redirected to the **Email Verification Screen**.
+3.  **Verification Screen:** This screen:
+    *   Automatically checks the user's verification status every 3 seconds.
+    *   Provides a "Resend Email" button with a 60-second cooldown.
+    *   Redirects to the main app only after successful email verification.
+4.  **Sign In:** Unverified users attempting to sign in are blocked and redirected to the verification screen.
 
 ## 🛠️ Getting Started
 
-This project is a standard Flutter application. To get started, ensure you have the Flutter SDK installed and configured.
-
 ### Prerequisites
 
-*   [Flutter SDK](https://flutter.dev/docs/get-started/install)
-*   [Firebase Project](https://console.firebase.google.com/) with **Email/Password** sign-in enabled in the **Authentication** section.
+*   [Flutter SDK](https://flutter.dev/docs/get-started/install) installed and configured.
+*   A **Firebase Project** with the following services enabled:
+    *   **Authentication:** Email/Password, Google Sign-In, and Facebook Sign-In.
+    *   **Cloud Messaging** (for push notifications).
+    *   **Cloud Functions** (if used).
 
 ### Setup
 
-1.  **Clone the repository:**
+1.  **Clone the repository and switch branch:**
     ```bash
     git clone https://github.com/Mohamed-Ayman28/HiddenTreasures-DEPI.git
     cd HiddenTreasures-DEPI
-    ```
-
-2.  **Switch to the `mo-latest` branch:**
-    ```bash
     git checkout mo-latest
     ```
 
-3.  **Install dependencies:**
+2.  **Install dependencies:**
     ```bash
     flutter pub get
     ```
 
-4.  **Configure Firebase:**
-    *   Follow the official FlutterFire documentation to add your `google-services.json` (Android) and `GoogleService-Info.plist` (iOS) files to the respective platform folders.
-    *   Ensure the **Email/Password** sign-in provider is enabled in your Firebase console.
+3.  **Configure Firebase:**
+    *   Add your platform-specific configuration files (`google-services.json` for Android, `GoogleService-Info.plist` for iOS) to the respective platform folders.
+    *   Ensure all required sign-in providers are enabled in your Firebase console.
 
-5.  **Run the application:**
+4.  **Run the application:**
     ```bash
     flutter run
     ```
 
-## 🚀 How to Test Authentication
+## 📚 Internal Documentation
 
-The application is ready for testing the full authentication and verification flow:
-
-1.  **Sign Up:** Create a new account. You will be immediately redirected to the **Email Verification Screen**.
-2.  **Verify Email:** Check your email inbox and click the verification link. The app will automatically detect the change and navigate to the home screen.
-3.  **Sign In:** Sign out and then sign back in with your verified credentials.
-4.  **Unverified Sign In:** If you sign up and do *not* verify your email, attempting to sign in will redirect you back to the **Email Verification Screen**.
-
-## 📚 Documentation
-
-For more detailed information on specific features, please refer to the following internal documentation files:
+For more in-depth details on the implementation of core features, please refer to the following files within the repository:
 
 *   [`FIREBASE_AUTH_README.md`](FIREBASE_AUTH_README.md): Detailed guide on the Firebase Email/Password authentication implementation.
 *   [`EMAIL_VERIFICATION_FEATURE.md`](EMAIL_VERIFICATION_FEATURE.md): In-depth explanation of the email verification screen, user flow, and technical implementation.
+*   [`STATE_MANAGEMENT_GUIDE.md`](STATE_MANAGEMENT_GUIDE.md): Comprehensive guide on the BLoC/Cubit architecture and HydratedBloc persistence.
 
 ## 🤝 Contributing
 
-This project is currently under active development on the `mo-latest` branch. Contributions are welcome. Please open an issue or submit a pull request for any suggested improvements or bug fixes.
+This project is currently under active development on the `mo-latest` branch. Contributions, bug reports, and feature suggestions are welcome via issues and pull requests.
 
 ## 📝 License
 
-*(License information is not explicitly provided in the repository. Assume standard open-source practices or add license information once available.)*
+*(License information is not explicitly provided in the repository. Please check the repository for a LICENSE file or contact the maintainer for licensing details.)*
 
 ## 🧑‍💻 Developer
 
 **Mohamed-Ayman28**
-**Mohamed-Ayman28**
-**Mohamed-Ayman28**
-**Mohamed-Ayman28**
+*   *Note: The original repository only mentions the developer's GitHub handle.*
