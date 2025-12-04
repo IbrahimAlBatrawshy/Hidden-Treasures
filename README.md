@@ -164,4 +164,5 @@ This project is currently under active development on the `mo-latest` branch. Co
 ## 🧑‍💻 Developer
 
 **Mohamed-Ayman28**
-*   *Note: The original repository only mentions the developer's GitHub handle.*
+**MoMokhtarX**
+**iskanor1**
