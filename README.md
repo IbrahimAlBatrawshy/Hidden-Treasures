@@ -24,6 +24,40 @@ The `mo-latest` branch includes a wide array of integrated features, making it a
 *   **Social Sign-In:** Support for Google and Facebook sign-in.
 *   **Chatbot:** Inclusion of a dedicated chatbot feature.
 
+## 📱 Application Screens
+
+The application is structured with a variety of screens to handle user authentication, navigation, and core features.
+
+### Authentication Screens
+
+| Screen | File | Description |
+| :--- | :--- | :--- |
+| **Login Screen** | `login_screen.dart` | Handles user sign-in with email/password, forgot password, and navigation to the sign-up screen. |
+| **Sign Up Screen** | `signup_screen.dart` | Handles new user registration and automatically triggers email verification. |
+| **Email Verification Screen** | `email_verification_screen.dart` | Mandatory screen for unverified users, featuring auto-check, resend email, and manual check functionality. |
+| **Logout Screen** | `logout_screen.dart` | Handles the user sign-out process. |
+
+### Main Navigation Screens (Bottom Navigation Bar)
+
+These screens are likely accessed via a bottom navigation bar, as suggested by the `bottomNavPages` directory.
+
+| Screen | File | Description |
+| :--- | :--- | :--- |
+| **Favorites Screen** | `bottomNavPages/fav_screen.dart` | Displays the user's saved favorite items (e.g., hotels, restaurants), managed by `FavoritesCubit`. |
+| **Map Screen** | `bottomNavPages/map_screen.dart` | Displays the map interface, likely for searching and viewing locations, utilizing `google_maps_flutter` and `geolocator`. |
+| **New Profile Screen** | `bottomNavPages/new_pf_Screen.dart` | A new or updated user profile screen. |
+| **Chats Screen** | `bottomNavPages/chats/` | Contains screens related to the in-app chat or messaging feature. |
+
+### Feature & Utility Screens
+
+| Screen | File | Description |
+| :--- | :--- | :--- |
+| **Home Screen** | `home_screen.dart` | The main landing page after successful login/verification. |
+| **My Account Screen** | `myaccount_screen.dart` | User account settings and profile management. |
+| **Notifications Screen** | `notifications_screen.dart` | Displays a list of user notifications. |
+| **Help Center Screen** | `help_center_screen.dart` | Provides help, support, and troubleshooting information. |
+| **Car/Event/Hotel/Restaurant** | `car/`, `event/`, `hotel/`, `restaurant/` | Directories suggesting dedicated screens for detailed views and listings of these specific categories (e.g., Car Details, Event Listings, Hotel Booking, Restaurant Menus). |
+
 ## ⚙️ Technology Stack and Dependencies
 
 The project leverages a modern Flutter stack with the following key dependencies (from `pubspec.yaml`):
