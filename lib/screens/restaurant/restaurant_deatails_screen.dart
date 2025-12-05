@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../models/restaurant_model.dart';
 import '../../componets/componets.dart';
 import '../../constants/app_colors.dart';
@@ -44,6 +45,7 @@ class _RestaurantDeatailsScreenState extends State<RestaurantDeatailsScreen> {
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,
@@ -199,15 +201,6 @@ class _RestaurantDeatailsScreenState extends State<RestaurantDeatailsScreen> {
                         height: 1.5,
                       ),
                     ),
-                     SizedBox(height: 4),
-                     Text(
-                      'Read More...',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -273,11 +266,116 @@ class _RestaurantDeatailsScreenState extends State<RestaurantDeatailsScreen> {
       bottomNavigationBar: BookingButton(
         text: 'Connected With Restaurant',
         onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Connecting with ${widget.restaurant.name}'),
-              backgroundColor: AppColors.secondary,
-            ),
+          // Show hotline dialog with copy action
+          showDialog(
+            context: context,
+            builder: (context) {
+              final phoneStr = widget.restaurant.phoneNumber.toString();
+              final displayed = phoneStr.length >= 5 ? phoneStr.substring(0, 5) : phoneStr;
+              return Dialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                elevation: 8,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                      decoration: const BoxDecoration(
+                        color: AppColors.secondary,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.call, color: AppColors.textWhite),
+                          const SizedBox(width: 8),
+                          const Expanded(
+                            child: Text(
+                              'Restaurant Hotline',
+                              style: TextStyle(
+                                color: AppColors.textWhite,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: const Icon(Icons.close, color: AppColors.textWhite),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Content
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            displayed,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Use this number to contact the restaurant for reservations or inquiries.',
+                            style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Actions
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    await Clipboard.setData(ClipboardData(text: phoneStr));
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.secondary,
+                                    foregroundColor: AppColors.textWhite,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    child: Text('Copy', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: OutlinedButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(color: AppColors.secondary),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    child: Text('Close', style: TextStyle(fontSize: 16)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           );
         },
       ),

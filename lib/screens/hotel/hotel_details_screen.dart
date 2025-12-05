@@ -45,6 +45,7 @@ class _HotelDetailsScreenState extends State<HotelDetailsScreen> {
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,
@@ -215,15 +216,6 @@ class _HotelDetailsScreenState extends State<HotelDetailsScreen> {
                         fontSize: 14,
                         color: AppColors.textSecondary,
                         height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      'Read More...',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],

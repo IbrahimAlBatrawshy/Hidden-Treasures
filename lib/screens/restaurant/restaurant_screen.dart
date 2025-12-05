@@ -77,6 +77,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,

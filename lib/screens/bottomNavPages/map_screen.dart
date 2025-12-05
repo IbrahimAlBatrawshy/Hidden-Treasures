@@ -475,7 +475,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3E0),
       appBar: AppBar(
         title: const Text(
           'Map & Directions',

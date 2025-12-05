@@ -76,8 +76,13 @@ class _HotelBookingScreenState extends State<HotelBookingScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.secondary,
         title: const Text(
-          "Booking Details",
-          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+          'Booking Details',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         ),
         centerTitle: true,
       ),

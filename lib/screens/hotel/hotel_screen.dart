@@ -12,6 +12,7 @@ class HotelScreen extends StatefulWidget {
 
 class _HotelScreenState extends State<HotelScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _budgetController = TextEditingController();
   late final List<Hotel> _allHotels;
   List<Hotel> _filteredHotels = [];
 
@@ -21,20 +22,33 @@ class _HotelScreenState extends State<HotelScreen> {
     _allHotels = [...featuredHotels, ...popularHotels];
     _filteredHotels = _allHotels;
     _searchController.addListener(_filterHotels);
+    _budgetController.addListener(_filterHotels);
   }
 
   @override
   void dispose() {
     _searchController.removeListener(_filterHotels);
+    _budgetController.removeListener(_filterHotels);
     _searchController.dispose();
+    _budgetController.dispose();
     super.dispose();
   }
 
   void _filterHotels() {
-    final query = _searchController.text.toLowerCase();
+    final query = _searchController.text.toLowerCase().trim();
+    double? maxBudget;
+    final budgetText = _budgetController.text.trim();
+    if (budgetText.isNotEmpty) {
+      maxBudget = double.tryParse(budgetText.replaceAll(',', ''));
+    }
+
     setState(() {
       _filteredHotels = _allHotels.where((hotel) {
-        return hotel.name.toLowerCase().contains(query);
+        final matchesQuery = query.isEmpty ||
+            hotel.name.toLowerCase().contains(query) ||
+            hotel.address.toLowerCase().contains(query);
+        final matchesBudget = maxBudget == null || hotel.price <= maxBudget;
+        return matchesQuery && matchesBudget;
       }).toList();
     });
   }
@@ -76,6 +90,7 @@ class _HotelScreenState extends State<HotelScreen> {
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,
@@ -91,6 +106,24 @@ class _HotelScreenState extends State<HotelScreen> {
                 hintText: 'Search for hotels...',
                 prefixIcon:
                     const Icon(Icons.search, color: AppColors.textLight),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+          ),
+          // Budget Filter
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: TextField(
+              controller: _budgetController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: InputDecoration(
+                hintText: 'Max price per night',
+                prefixIcon: const Icon(Icons.attach_money, color: AppColors.textLight),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,

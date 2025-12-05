@@ -47,6 +47,7 @@ class _TouristChatbotScreenState extends State<TouristChatbotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFF3E0),
       appBar: AppBar(
         title: Row(
           children: [
@@ -58,7 +59,7 @@ class _TouristChatbotScreenState extends State<TouristChatbotScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w800,
-                  fontSize: 20,
+                  fontSize: 26,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -93,7 +94,7 @@ class _TouristChatbotScreenState extends State<TouristChatbotScreen> {
                 if (state is ChatbotError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error: ${state.error}'),
+                      content: Text('Error: \${state.error}'),
                       backgroundColor: Colors.red,
                       behavior: SnackBarBehavior.floating,
                     ),
@@ -147,16 +148,6 @@ class _TouristChatbotScreenState extends State<TouristChatbotScreen> {
     return Container(
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: suggestions.length,
@@ -196,7 +187,7 @@ class _TouristChatbotScreenState extends State<TouristChatbotScreen> {
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
         decoration: BoxDecoration(
-          color: isUser ? AppColors.buttonPrimary : Colors.grey[200],
+          color: isUser ? AppColors.buttonPrimary : Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(16),
             topRight: const Radius.circular(16),
@@ -301,7 +292,6 @@ class _TouristChatbotScreenState extends State<TouristChatbotScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -317,7 +307,7 @@ class _TouristChatbotScreenState extends State<TouristChatbotScreen> {
               child: TextField(
                 controller: _messageController,
                 decoration: InputDecoration(
-                  hintText: 'Ask me anything about tourism...',
+                  hintText: 'Ask anything about tourism...',
                   hintStyle: TextStyle(color: Colors.grey[400]),
                   filled: true,
                   fillColor: Colors.grey[100],

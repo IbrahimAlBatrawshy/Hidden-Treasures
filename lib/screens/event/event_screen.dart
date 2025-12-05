@@ -12,6 +12,7 @@ class EventScreen extends StatefulWidget {
 
 class _EventScreenState extends State<EventScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _budgetController = TextEditingController();
   late final List<Event> _allEvents;
   List<Event> _filteredEvents = [];
 
@@ -21,20 +22,31 @@ class _EventScreenState extends State<EventScreen> {
     _allEvents = [...featuredEvents, ...popularEvents];
     _filteredEvents = _allEvents;
     _searchController.addListener(_filterEvents);
+    _budgetController.addListener(_filterEvents);
   }
 
   @override
   void dispose() {
     _searchController.removeListener(_filterEvents);
+    _budgetController.removeListener(_filterEvents);
     _searchController.dispose();
+    _budgetController.dispose();
     super.dispose();
   }
 
   void _filterEvents() {
-    final query = _searchController.text.toLowerCase();
+    final query = _searchController.text.toLowerCase().trim();
+    double? maxBudget;
+    final budgetText = _budgetController.text.trim();
+    if (budgetText.isNotEmpty) {
+      maxBudget = double.tryParse(budgetText.replaceAll(',', ''));
+    }
+
     setState(() {
       _filteredEvents = _allEvents.where((event) {
-        return event.name.toLowerCase().contains(query);
+        final matchesQuery = query.isEmpty || event.name.toLowerCase().contains(query) || event.address.toLowerCase().contains(query);
+        final matchesBudget = maxBudget == null || event.price <= maxBudget;
+        return matchesQuery && matchesBudget;
       }).toList();
     });
   }
@@ -76,6 +88,7 @@ class _EventScreenState extends State<EventScreen> {
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,
@@ -91,6 +104,24 @@ class _EventScreenState extends State<EventScreen> {
                 hintText: 'Search for events...',
                 prefixIcon:
                     const Icon(Icons.search, color: AppColors.textLight),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+          ),
+          // Budget Filter
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: TextField(
+              controller: _budgetController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: InputDecoration(
+                hintText: 'Max ticket price',
+                prefixIcon: const Icon(Icons.attach_money, color: AppColors.textLight),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,

@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import '../../models/event_model.dart';
 import '../../constants/app_colors.dart';
+import '../paymet_screen.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   final Event event;
@@ -18,6 +19,48 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   void initState() {
     super.initState();
     isFavorite = widget.event.isFavorite;
+  }
+
+  // Helper to confirm booking and navigate to payment. Decrement happens after successful payment.
+  void _confirmAndBook() {
+    if (widget.event.availableTickets <= 0) {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        animType: AnimType.rightSlide,
+        title: 'Sold Out',
+        desc: 'No tickets available for this event.',
+        btnOkOnPress: () {},
+      ).show();
+      return;
+    }
+
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.info,
+      animType: AnimType.rightSlide,
+      title: 'Confirm Booking',
+      desc: 'Are you sure you want to proceed to payment?',
+      btnCancelOnPress: () {},
+      btnOkOnPress: () async {
+        // Navigate to PaymentScreen and wait for result. PaymentScreen will decrement tickets on success.
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentScreen(
+              title: 'Payment',
+              amountText: widget.event.price.toStringAsFixed(0),
+              event: widget.event,
+            ),
+          ),
+        );
+
+        // If payment succeeded, refresh UI to reflect updated availableTickets
+        if (result == true) {
+          setState(() {});
+        }
+      },
+    ).show();
   }
 
   @override
@@ -40,6 +83,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,
@@ -336,20 +380,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.info,
-                              animType: AnimType.rightSlide,
-                              title: 'Warning',
-                              desc:
-                                  'Are you sure you want to proceed to payment?',
-                              btnCancelOnPress: () {},
-                              btnOkOnPress: () {
-                                Navigator.pushNamed(context, '/payement');
-                              },
-                            ).show();
-                          },
+                          onPressed: _confirmAndBook,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.secondary,
                             foregroundColor: AppColors.textWhite,

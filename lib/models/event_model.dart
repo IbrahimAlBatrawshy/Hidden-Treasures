@@ -11,7 +11,7 @@ class Event {
   final String description;
   bool isFavorite;
   final String category;
-  final int availableTickets;
+  int availableTickets; // made mutable
   final String organizer;
 
   Event({

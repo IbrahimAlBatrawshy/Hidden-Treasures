@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constants/app_colors.dart';
 
 class BookingInvoiceScreen extends StatelessWidget {
   final String hotelName;
@@ -23,45 +24,80 @@ class BookingInvoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Booking Summary')),
-      body: Padding(
+      backgroundColor: const Color(0xFFFFF3E0),
+      appBar: AppBar(
+        backgroundColor: AppColors.secondary,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        centerTitle: true,
+        title: const Text(
+          'Booking Summary',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              hotelName,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              elevation: 3,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hotelName,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    _itemRow('Room Type', roomType),
+                    _itemRow('Adults', adults.toString()),
+                    _itemRow('Kids', kids.toString()),
+                    _itemRow('Check-in', _formatDate(checkIn)),
+                    _itemRow('Check-out', _formatDate(checkOut)),
+
+                    const Divider(height: 32, color: AppColors.backgroundSecondary),
+
+                    _itemRow(
+                      'Total Price',
+                      '\$${price.toStringAsFixed(2)}',
+                      isBold: true,
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 20),
 
-            _itemRow('Room Type', roomType),
-            _itemRow('Adults', adults.toString()),
-            _itemRow('Kids', kids.toString()),
-            _itemRow('Check-in', _formatDate(checkIn)),
-            _itemRow('Check-out', _formatDate(checkOut)),
+            const SizedBox(height: 18),
 
-            const Divider(height: 40),
-
-            _itemRow(
-              'Total Price',
-              '\$${price.toStringAsFixed(2)}',
-              isBold: true,
-            ),
-
-            const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.deepOrange,
+                  backgroundColor: AppColors.secondary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/payment');
+                  Navigator.pushNamed(context, '/payement');
                 },
                 child: const Text(
                   'Proceed to Payment',
@@ -81,11 +117,12 @@ class BookingInvoiceScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(fontSize: 16)),
+          Text(title, style: const TextStyle(fontSize: 16, color: AppColors.textSecondary)),
           Text(
             value,
             style: TextStyle(
               fontSize: 16,
+              color: isBold ? AppColors.textPrimary : AppColors.textSecondary,
               fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
             ),
           ),

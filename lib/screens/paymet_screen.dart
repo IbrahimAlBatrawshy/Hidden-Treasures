@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:hidden_treasures/paymen_funcs.dart';
 import '../../constants/app_colors.dart';
+import '../../models/event_model.dart';
 
 class PaymentScreen extends StatefulWidget {
   final String title;
   final String amountText;
+  final Event? event; // Accept an optional Event
 
   const PaymentScreen({
     super.key,
     required this.title,
     required this.amountText,
+    this.event,
   });
 
   @override
@@ -24,6 +27,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String cvvCode = '';
   bool isCvvFocused = false;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  // Simulate a payment process (placeholder for real payment integration)
+  Future<bool> _simulatePayment() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    return true; // simulate success
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,54 +208,72 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void _onPay() async {
-  if (formKey.currentState?.validate() ?? false) {
-    // Show a temporary "Processing payment" message
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Processing your payment...'),
-        backgroundColor: AppColors.info,
-      ),
-    );
-
-    // Simulate successful payment and send confirmation email
-    bool emailSent = await sendEventPaymentConfirmation(
-      userEmail: "mohameda.ayman@gmail.com", // replace with actual user's email
-      userName: cardHolderName.isNotEmpty ? cardHolderName : "Valued Customer",
-    );
-
-    if (emailSent) {
+    if (formKey.currentState?.validate() ?? false) {
+      // Show a temporary "Processing payment" message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            '✅ Payment successful! A confirmation email has been sent.',
-          ),
-          backgroundColor: AppColors.success,
-          duration: Duration(seconds: 4),
+          content: Text('Processing your payment...'),
+          backgroundColor: AppColors.info,
         ),
       );
+
+      // Simulate payment success (replace with real payment integration)
+      final bool paymentSucceeded = await _simulatePayment();
+
+      // Send confirmation email (best-effort)
+      final bool emailSent = await sendEventPaymentConfirmation(
+        userEmail: "mohameda.ayman@gmail.com", // replace with actual user's email
+        userName: cardHolderName.isNotEmpty ? cardHolderName : "Valued Customer",
+      );
+
+      if (paymentSucceeded) {
+        // Decrement the available tickets for the event in-memory
+        if (widget.event != null && widget.event!.availableTickets > 0) {
+          widget.event!.availableTickets -= 1;
+        }
+
+        // Show different messages depending on email send status
+        if (emailSent) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Payment successful! A confirmation email has been sent.',
+              ),
+              backgroundColor: AppColors.success,
+              duration: Duration(seconds: 4),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Payment successful! But confirmation email failed to send.',
+              ),
+              backgroundColor: AppColors.warning,
+              duration: Duration(seconds: 4),
+            ),
+          );
+        }
+
+        // Return success result to caller so UI can refresh
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Payment failed. Please try again.'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            '⚠️ Payment succeeded, but email confirmation failed. Please check your network.',
-          ),
+          content: Text('Please enter valid card details'),
           backgroundColor: AppColors.error,
         ),
       );
     }
-
-    // Return to previous screen after a short delay
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pop();
-    });
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please enter valid card details'),
-        backgroundColor: AppColors.error,
-      ),
-    );
   }
-}
-
 }

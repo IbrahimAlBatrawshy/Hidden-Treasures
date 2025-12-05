@@ -314,15 +314,15 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: CircleNavBar(
         activeIcons: const [
           Icon(Icons.map, color: AppColors.background),
-          Icon(Icons.chat, color: AppColors.background),
+          Icon(Icons.smart_toy, color: AppColors.background),
           Icon(Icons.home, color: AppColors.background),
           Icon(Icons.favorite, color: AppColors.background),
           Icon(Icons.person, color: AppColors.background),
         ],
         inactiveIcons: const [
-          Icon(Icons.map, color: AppColors.background),
-          Icon(Icons.chat, color: AppColors.background),
-          Icon(Icons.home, color: AppColors.background),
+          Icon(Icons.map_outlined, color: AppColors.background),
+          Icon(Icons.smart_toy_outlined, color: AppColors.background),
+          Icon(Icons.home_outlined, color: AppColors.background),
           Icon(Icons.favorite_border, color: AppColors.background),
           Icon(Icons.person_outline, color: AppColors.background),
         ],

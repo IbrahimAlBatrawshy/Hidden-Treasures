@@ -12,6 +12,7 @@ class CarrentalScreen extends StatefulWidget {
 
 class _CarrentalScreenState extends State<CarrentalScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _budgetController = TextEditingController();
   late final List<CarModel> _allCars;
   List<CarModel> _filteredCars = [];
 
@@ -21,20 +22,31 @@ class _CarrentalScreenState extends State<CarrentalScreen> {
     _allCars = [...featuredCars, ...popularCars];
     _filteredCars = _allCars;
     _searchController.addListener(_filterCars);
+    _budgetController.addListener(_filterCars);
   }
 
   @override
   void dispose() {
     _searchController.removeListener(_filterCars);
+    _budgetController.removeListener(_filterCars);
     _searchController.dispose();
+    _budgetController.dispose();
     super.dispose();
   }
 
   void _filterCars() {
-    final query = _searchController.text.toLowerCase();
+    final query = _searchController.text.toLowerCase().trim();
+    double? maxBudget;
+    final budgetText = _budgetController.text.trim();
+    if (budgetText.isNotEmpty) {
+      maxBudget = double.tryParse(budgetText.replaceAll(',', ''));
+    }
+
     setState(() {
       _filteredCars = _allCars.where((car) {
-        return car.displayName.toLowerCase().contains(query);
+        final matchesQuery = query.isEmpty || car.displayName.toLowerCase().contains(query) || car.location.toLowerCase().contains(query);
+        final matchesBudget = maxBudget == null || car.pricePerDay <= maxBudget!;
+        return matchesQuery && matchesBudget;
       }).toList();
     });
   }
@@ -76,6 +88,7 @@ class _CarrentalScreenState extends State<CarrentalScreen> {
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,
@@ -91,6 +104,24 @@ class _CarrentalScreenState extends State<CarrentalScreen> {
                 hintText: 'Search for cars...',
                 prefixIcon:
                     const Icon(Icons.search, color: AppColors.textLight),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            ),
+          ),
+          // Budget Filter
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: TextField(
+              controller: _budgetController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: InputDecoration(
+                hintText: 'Max price per day',
+                prefixIcon: const Icon(Icons.attach_money, color: AppColors.textLight),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,

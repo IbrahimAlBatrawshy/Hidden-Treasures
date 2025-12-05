@@ -223,15 +223,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                       height: 1.5,
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Read More...',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
                 ],
               ),
             ),
