@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # HiddenTreasures-DEPI
 
 ## 💎 Project Overview
@@ -22,8 +20,7 @@ The `mo-latest` branch includes a wide array of integrated features, making it a
 *   **Advanced State Management:** Utilizes the **BLoC/Cubit** pattern with **HydratedBloc** for predictable, persistent, and scalable state management.
 *   **Location & Mapping:** Integration with Google Maps for location services, geolocation, and drawing polylines.
 *   **Credit Card Integration:** Functionality for handling credit card inputs and payment-related features.
-*   **Real-time Messaging:** Firebase Cloud Messaging for push notifications.
-*   **Social Sign-In:** Support for Google and Facebook sign-in.
+*   **Social Sign-In:** Support for Google sign-in.
 *   **Chatbot:** Inclusion of a dedicated chatbot feature.
 
 ## 📱 Application Screens
@@ -43,12 +40,12 @@ The application is structured with a variety of screens to handle user authentic
 
 These screens are likely accessed via a bottom navigation bar, as suggested by the `bottomNavPages` directory.
 
-| Screen | File | Description |
-| :--- | :--- | :--- |
-| **Favorites Screen** | `bottomNavPages/fav_screen.dart` | Displays the user's saved favorite items (e.g., hotels, restaurants), managed by `FavoritesCubit`. |
-| **Map Screen** | `bottomNavPages/map_screen.dart` | Displays the map interface, likely for searching and viewing locations, utilizing `google_maps_flutter` and `geolocator`. |
-| **New Profile Screen** | `bottomNavPages/new_pf_Screen.dart` | A new or updated user profile screen. |
-| **Chats Screen** | `bottomNavPages/chats/` | Contains screens related to the in-app chat or messaging feature. |
+| Screen                 | File | Description                                                                                                               |
+|:-----------------------| :--- |:--------------------------------------------------------------------------------------------------------------------------|
+| **Favorites Screen**   | `bottomNavPages/fav_screen.dart` | Displays the user's saved favorite items (e.g., hotels, restaurants), managed by `FavoritesCubit`.                        |
+| **Map Screen**         | `bottomNavPages/map_screen.dart` | Displays the map interface, likely for searching and viewing locations, utilizing `google_maps_flutter` and `geolocator`. |
+| **New Profile Screen** | `bottomNavPages/new_pf_Screen.dart` | A new or updated user profile screen.                                                                                     |
+| **Chatbot Screen**     | `bottomNavPages/chats/` | Contains screens related to the in-app chatbot.                                                                           |
 
 ### Feature & Utility Screens
 
@@ -159,13 +156,8 @@ For more in-depth details on the implementation of core features, please refer t
 
 This project is currently under active development on the `mo-latest` branch. Contributions, bug reports, and feature suggestions are welcome via issues and pull requests.
 
-## 📝 License
-
-*(License information is not explicitly provided in the repository. Please check the repository for a LICENSE file or contact the maintainer for licensing details.)*
-
 ## 🧑‍💻 Developer
 
 **Mohamed-Ayman28**
 **MoMokhtarX**
 **iskanor1**
->>>>>>> 63dea0d9271ab08f569bee0bf165c9d418f50836
