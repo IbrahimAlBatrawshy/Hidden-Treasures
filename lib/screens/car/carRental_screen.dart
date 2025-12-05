@@ -45,7 +45,7 @@ class _CarrentalScreenState extends State<CarrentalScreen> {
     setState(() {
       _filteredCars = _allCars.where((car) {
         final matchesQuery = query.isEmpty || car.displayName.toLowerCase().contains(query) || car.location.toLowerCase().contains(query);
-        final matchesBudget = maxBudget == null || car.pricePerDay <= maxBudget!;
+        final matchesBudget = maxBudget == null || car.pricePerDay <= maxBudget;
         return matchesQuery && matchesBudget;
       }).toList();
     });
