@@ -13,7 +13,7 @@ The primary development language is **Dart**, with platform-specific configurati
 
 ## ✨ Key Features
 
-The `mo-latest` branch includes a wide array of integrated features, making it a comprehensive starting point for a modern mobile application:
+The branch includes a wide array of integrated features, making it a comprehensive starting point for a modern mobile application:
 
 *   **Secure Authentication:** Full Firebase Email/Password authentication flow with sign-in, sign-up, and password reset.
 *   **Mandatory Email Verification:** Enforced email verification with an auto-checking screen, resend functionality, and a 60-second cooldown.
@@ -154,7 +154,7 @@ For more in-depth details on the implementation of core features, please refer t
 
 ## 🤝 Contributing
 
-This project is currently under active development on the `mo-latest` branch. Contributions, bug reports, and feature suggestions are welcome via issues and pull requests.
+This project is currently under active development . Contributions, bug reports, and feature suggestions are welcome via issues and pull requests.
 
 ## 🧑‍💻 Developer
 
